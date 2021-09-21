@@ -58,4 +58,17 @@ describe("SignUpController", () => {
         const httpResponse = await sut.handle(httpRequest);
         expect(httpResponse).toEqual(badRequest("password"))
     })
+    test("Should return badRequest Error if paswordConfirm is not provided",async () => {
+        const sut = new SignUpController()
+        const httpRequest = {
+            body : {
+                username: "any_username",
+                email: "any_email",
+                password: "any_password",
+                paswordConfirm: ""
+            }
+        }
+        const httpResponse = await sut.handle(httpRequest);
+        expect(httpResponse).toEqual(badRequest("paswordConfirm"))
+    })
 })

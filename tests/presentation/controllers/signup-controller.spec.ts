@@ -1,9 +1,14 @@
 import { badRequest } from '@/../../src/presentation/helpers'
 import { SignUpController } from '@/../../src/presentation/controller'
+import { IHttpRequest } from '@/../../src/presentation/protocols'
 import faker, { fake } from 'faker'
 
+type SutTypes = {
+    sut: SignUpController
+    mockRequest : IHttpRequest
+}
 
-const makeSut = () => {
+const makeSut = (): SutTypes => {
     const mockRequest = {
         body: {
             username : faker.name.findName(),

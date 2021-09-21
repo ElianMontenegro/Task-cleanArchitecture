@@ -1,10 +1,14 @@
 import { IController, IHttpRequest, IHttpResponse } from '@/../../src/presentation/protocols'
-import { badRequest, forbidden, serverError } from '@/../../src/presentation/helpers'
-import { AddAccount } from '../../domain/usecases'
+import { badRequest, forbidden, ok, serverError } from '@/../../src/presentation/helpers'
+import { AddAccount, Authentication } from '../../domain/usecases'
 import { EmailInUseError } from '../errors'
 
 export class SignUpController implements IController{
-    constructor(private readonly addAccount : AddAccount){}
+    constructor(
+        private readonly addAccount : AddAccount,
+        private readonly authentication : Authentication
+    ){}
+
     async handle(request: IHttpRequest): Promise<IHttpResponse>{
         try {
             const paramsRequired = ["username", "email", "password", "passwordConfirmation"]
@@ -24,10 +28,12 @@ export class SignUpController implements IController{
                 return forbidden(new EmailInUseError())
             }
 
-            return {
-                statusCode: 200,
-                body: ""
-            }
+            const authenticationModel = await this.authentication.auth({
+                email,
+                password
+            })
+            return ok(authenticationModel)
+
         } catch (error: any) {
             return {
                 statusCode: 500,

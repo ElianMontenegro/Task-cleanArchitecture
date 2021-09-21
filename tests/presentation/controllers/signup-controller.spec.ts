@@ -1,7 +1,7 @@
-import { badRequest, forbidden, serverError } from '@/../../src/presentation/helpers'
+import { badRequest, forbidden, ok, serverError } from '@/../../src/presentation/helpers'
 import { SignUpController } from '@/../../src/presentation/controller'
 import { IHttpRequest } from '@/../../src/presentation/protocols'
-import { AddAccountSpy, throwError } from '../mocks'
+import { AddAccountSpy, throwError, AutheticationSpy } from '../mocks'
 import faker from 'faker'
 import { EmailInUseError } from '../../../src/presentation/errors'
 
@@ -9,6 +9,7 @@ type SutTypes = {
     sut: SignUpController
     mockRequest : IHttpRequest
     addAccountSpy : AddAccountSpy
+    autheticationSpy : AutheticationSpy
 }
 
 const makeSut = (): SutTypes => {
@@ -20,12 +21,14 @@ const makeSut = (): SutTypes => {
             passwordConfirmation: faker.internet.password()
         }
     }
+    const autheticationSpy = new AutheticationSpy()
     const addAccountSpy = new AddAccountSpy()
-    const sut = new SignUpController(addAccountSpy)
+    const sut = new SignUpController(addAccountSpy, autheticationSpy)
     return {
         mockRequest,
         sut,
-        addAccountSpy
+        addAccountSpy,
+        autheticationSpy
     }
 }
 
@@ -81,5 +84,14 @@ describe("SignUpController", () => {
         const Response = await sut.handle(mockRequest)
         expect(Response).toEqual(forbidden(new EmailInUseError()))
     })
+
+
+    test('Should return 200 if valid data is provided', async () => {
+        const { sut, autheticationSpy , mockRequest } = makeSut()
+        const Response = await sut.handle(mockRequest)
+        expect(Response).toEqual(ok(autheticationSpy.result))
+    })
+
+
     
 })

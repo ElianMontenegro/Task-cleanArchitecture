@@ -100,4 +100,10 @@ describe("SignUpController", () => {
         })
     })
 
+    test('Should return 500 if Authentication throws', async () => {
+        const { sut, authenticationSpy, mockRequest } = makeSut()
+        jest.spyOn(authenticationSpy, 'auth').mockImplementationOnce(throwError)
+        const httpResponse = await sut.handle(mockRequest)
+        expect(httpResponse.body).toEqual(serverError(new Error()))
+      })
 })

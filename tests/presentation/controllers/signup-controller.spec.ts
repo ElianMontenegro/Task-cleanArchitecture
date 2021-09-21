@@ -2,15 +2,22 @@ import { IController, IHttpRequest, IHttpResponse } from '@/../../src/presentati
 import { badRequest } from '@/../../src/presentation/helpers'
 export class SignUpController implements IController{
     async handle(request: IHttpRequest): Promise<IHttpResponse>{
-        const paramsRequired = ["username", "email", "password", "paswordConfirm"]
-        for (const params of paramsRequired) {
-            if (!request.body[params]) {
-                return badRequest(params)
+        try {
+            const paramsRequired = ["username", "email", "password", "paswordConfirm"]
+            for (const params of paramsRequired) {
+                if (!request.body[params]) {
+                    return badRequest(params)
+                }
             }
-        }
-        return {
-            statusCode: 200,
-            body: ""
+            return {
+                statusCode: 200,
+                body: ""
+            }
+        } catch (error) {
+            return {
+                statusCode: 500,
+                body: error
+            }
         }
     }
 }
@@ -38,5 +45,17 @@ describe("SignUpController", () => {
         }
         const httpResponse = await sut.handle(httpRequest);
         expect(httpResponse).toEqual(badRequest("email"))
+    })
+    test("Should return badRequest Error if password is not provided",async () => {
+        const sut = new SignUpController()
+        const httpRequest = {
+            body : {
+                username: "any_username",
+                email: "any_email",
+                password: ""
+            }
+        }
+        const httpResponse = await sut.handle(httpRequest);
+        expect(httpResponse).toEqual(badRequest("password"))
     })
 })

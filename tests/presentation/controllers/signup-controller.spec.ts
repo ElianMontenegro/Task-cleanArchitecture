@@ -28,4 +28,15 @@ describe("SignUpController", () => {
         const httpResponse = await sut.handle(httpRequest);
         expect(httpResponse).toEqual(badRequest("username"))
     })
+    test("Should return badRequest Error if email is not provided",async () => {
+        const sut = new SignUpController()
+        const httpRequest = {
+            body : {
+                username: "any_username",
+                email: ""
+            }
+        }
+        const httpResponse = await sut.handle(httpRequest);
+        expect(httpResponse).toEqual(badRequest("email"))
+    })
 })

@@ -10,7 +10,7 @@ export class AddAccountSpy implements AddAccount{
     }
 } 
 
-export class AutheticationSpy implements Authentication{
+export class AuthenticationSpy implements Authentication{
     params: Authentication.Params
     result = {
         accessToken: faker.datatype.uuid(),

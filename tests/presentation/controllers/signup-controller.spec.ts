@@ -1,7 +1,7 @@
 import { badRequest, forbidden, ok, serverError } from '@/../../src/presentation/helpers'
 import { SignUpController } from '@/../../src/presentation/controller'
 import { IHttpRequest } from '@/../../src/presentation/protocols'
-import { AddAccountSpy, throwError, AutheticationSpy } from '../mocks'
+import { AddAccountSpy, throwError, AuthenticationSpy } from '../mocks'
 import faker from 'faker'
 import { EmailInUseError } from '../../../src/presentation/errors'
 
@@ -9,7 +9,7 @@ type SutTypes = {
     sut: SignUpController
     mockRequest : IHttpRequest
     addAccountSpy : AddAccountSpy
-    autheticationSpy : AutheticationSpy
+    authenticationSpy : AuthenticationSpy
 }
 
 const makeSut = (): SutTypes => {
@@ -21,14 +21,14 @@ const makeSut = (): SutTypes => {
             passwordConfirmation: faker.internet.password()
         }
     }
-    const autheticationSpy = new AutheticationSpy()
+    const authenticationSpy = new AuthenticationSpy()
     const addAccountSpy = new AddAccountSpy()
-    const sut = new SignUpController(addAccountSpy, autheticationSpy)
+    const sut = new SignUpController(addAccountSpy, authenticationSpy)
     return {
         mockRequest,
         sut,
         addAccountSpy,
-        autheticationSpy
+        authenticationSpy
     }
 }
 
@@ -85,13 +85,19 @@ describe("SignUpController", () => {
         expect(Response).toEqual(forbidden(new EmailInUseError()))
     })
 
-
     test('Should return 200 if valid data is provided', async () => {
-        const { sut, autheticationSpy , mockRequest } = makeSut()
+        const { sut, authenticationSpy , mockRequest } = makeSut()
         const Response = await sut.handle(mockRequest)
-        expect(Response).toEqual(ok(autheticationSpy.result))
+        expect(Response).toEqual(ok(authenticationSpy.result))
     })
 
+    test('Should call Authentication with correct values', async () => {
+        const { sut, authenticationSpy, mockRequest} = makeSut()
+        await sut.handle(mockRequest)
+        expect(authenticationSpy.params).toEqual({
+          email: mockRequest.body.email,
+          password: mockRequest.body.password
+        })
+    })
 
-    
 })

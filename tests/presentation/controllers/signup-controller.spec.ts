@@ -1,8 +1,9 @@
-import { badRequest, serverError } from '@/../../src/presentation/helpers'
+import { badRequest, forbidden, serverError } from '@/../../src/presentation/helpers'
 import { SignUpController } from '@/../../src/presentation/controller'
 import { IHttpRequest } from '@/../../src/presentation/protocols'
 import { AddAccountSpy, throwError } from '../mocks'
 import faker from 'faker'
+import { EmailInUseError } from '../../../src/presentation/errors'
 
 type SutTypes = {
     sut: SignUpController
@@ -72,6 +73,13 @@ describe("SignUpController", () => {
             email: mockRequest.body.email,
             password: mockRequest.body.password
         })
+    })
+
+    test('Should return 403 if addAccount return false', async () => {
+        const { sut, addAccountSpy , mockRequest } = makeSut()
+        addAccountSpy.result = false
+        const Response = await sut.handle(mockRequest)
+        expect(Response).toEqual(forbidden(new EmailInUseError()))
     })
     
 })

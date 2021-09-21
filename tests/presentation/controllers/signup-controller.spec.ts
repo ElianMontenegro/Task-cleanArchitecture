@@ -1,11 +1,13 @@
-import { badRequest } from '@/../../src/presentation/helpers'
+import { badRequest, serverError } from '@/../../src/presentation/helpers'
 import { SignUpController } from '@/../../src/presentation/controller'
 import { IHttpRequest } from '@/../../src/presentation/protocols'
-import faker, { fake } from 'faker'
+import { AddAccountSpy, throwError } from '../mocks'
+import faker from 'faker'
 
 type SutTypes = {
     sut: SignUpController
     mockRequest : IHttpRequest
+    addAccountSpy : AddAccountSpy
 }
 
 const makeSut = (): SutTypes => {
@@ -17,10 +19,12 @@ const makeSut = (): SutTypes => {
             passwordConfirmation: faker.internet.password()
         }
     }
-    const sut = new SignUpController()
+    const addAccountSpy = new AddAccountSpy()
+    const sut = new SignUpController(addAccountSpy)
     return {
         mockRequest,
-        sut
+        sut,
+        addAccountSpy
     }
 }
 
@@ -51,5 +55,12 @@ describe("SignUpController", () => {
         mockRequest.body.passwordConfirmation = ""
         const httpResponse = await sut.handle(mockRequest);
         expect(httpResponse).toEqual(badRequest("passwordConfirmation"))
+    })
+
+    test('Should return 500 if AddAccount throws', async () => {
+        const { sut, addAccountSpy , mockRequest } = makeSut()
+        jest.spyOn(addAccountSpy, 'add').mockImplementationOnce(throwError)
+        const httpResponse = await sut.handle(mockRequest)
+        expect(httpResponse.body).toEqual(serverError(new Error()))
     })
 })

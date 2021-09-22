@@ -50,4 +50,10 @@ describe("DbAddAccount Usecase", () => {
         expect(isValid).toBe(false)
     })
 
+    test("Should call CheckAccountByEmailRepository with correct email", async () => {
+        const { sut, checkAccountByEmailRepositorySpy } = makeSut()
+        const accountParams = mockAddAccountParams()
+        await sut.add(accountParams)
+        expect(checkAccountByEmailRepositorySpy.email).toBe(accountParams.email)
+    })
 })

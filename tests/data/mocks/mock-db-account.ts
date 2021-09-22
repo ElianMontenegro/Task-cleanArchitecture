@@ -4,7 +4,7 @@ export class CheckAccountByEmailRepositorySpy implements CheckAccountByEmailRepo
     email : string
     result : CheckAccountByEmailRepository.Result
     async checkByEmail(email: string): Promise<CheckAccountByEmailRepository.Result>{
-        this.email
+        this.email = email
         return this.result
     }
     

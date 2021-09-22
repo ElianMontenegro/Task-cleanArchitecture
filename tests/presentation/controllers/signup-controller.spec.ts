@@ -13,12 +13,13 @@ type SutTypes = {
 }
 
 const makeSut = (): SutTypes => {
+    const password = faker.internet.password()
     const mockRequest = {
         body: {
             username : faker.name.findName(),
             email: faker.internet.email(),
-            password : faker.internet.password(),
-            passwordConfirmation: faker.internet.password()
+            password : password,
+            passwordConfirmation: password
         }
     }
     const authenticationSpy = new AuthenticationSpy()
@@ -59,6 +60,13 @@ describe("SignUpController", () => {
         mockRequest.body.passwordConfirmation = ""
         const httpResponse = await sut.handle(mockRequest);
         expect(httpResponse).toEqual(badRequest("passwordConfirmation"))
+    })
+
+    test("Should return badRequest Error if password and passwordConfirmation do not match",async () => {
+        const { sut, mockRequest } = makeSut()
+        mockRequest.body.passwordConfirmation = "different_password"
+        const httpResponse = await sut.handle(mockRequest);
+        expect(httpResponse).toEqual(badRequest("password"))
     })
 
     test('Should return 500 if AddAccount throws error', async () => {
@@ -105,5 +113,7 @@ describe("SignUpController", () => {
         jest.spyOn(authenticationSpy, 'auth').mockImplementationOnce(throwError)
         const httpResponse = await sut.handle(mockRequest)
         expect(httpResponse.body).toEqual(serverError(new Error()))
-      })
+    })
+
+
 })

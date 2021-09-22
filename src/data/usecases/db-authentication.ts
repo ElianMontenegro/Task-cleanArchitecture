@@ -8,10 +8,13 @@ export class DbAuthentication implements Authentication {
     ) {}
     async auth(authenticationParams: Authentication.Params): Promise<Authentication.Result>{
         const account = this.loadAccountByEmailRepository.load(authenticationParams.email)
-        return {
-            accessToken : "",
-            refreshToken : ""
-        }
+        if(!account){
+            return {
+                accessToken : "",
+                refreshToken : ""
+            }
+        } 
+        return null as any
     }
     
 }

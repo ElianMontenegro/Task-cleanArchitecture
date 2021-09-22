@@ -1,9 +1,9 @@
 import { IHttpResponse } from '../protocols'
 import { ServerError, UnauthorizedError, MissingParamError } from '../errors'
 
-export const badRequest = (param: string): IHttpResponse => ({
+export const badRequest = (error : Error): IHttpResponse => ({
   statusCode: 400,
-  body: new MissingParamError(param).message
+  body: error
 })
 
 export const forbidden = (error: Error): IHttpResponse => ({

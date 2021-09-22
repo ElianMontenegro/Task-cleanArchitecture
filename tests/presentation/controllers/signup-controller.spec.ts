@@ -3,7 +3,7 @@ import { SignUpController } from '@/../../src/presentation/controller'
 import { IHttpRequest } from '@/../../src/presentation/protocols'
 import { AddAccountSpy, throwError, AuthenticationSpy } from '../mocks'
 import faker from 'faker'
-import { EmailInUseError } from '../../../src/presentation/errors'
+import { EmailInUseError, InvalidParamError, MissingParamError } from '../../../src/presentation/errors'
 
 type SutTypes = {
     sut: SignUpController
@@ -41,32 +41,32 @@ describe("SignUpController", () => {
         const { sut, mockRequest } = makeSut()
         mockRequest.body.username = ""
         const httpResponse = await sut.handle(mockRequest);
-        expect(httpResponse).toEqual(badRequest("username"))
+        expect(httpResponse).toEqual(badRequest(new MissingParamError("username")))
     })
     test("Should return badRequest Error if email is not provided",async () => {
         const { sut, mockRequest } = makeSut()
         mockRequest.body.email = ""
         const httpResponse = await sut.handle(mockRequest);
-        expect(httpResponse).toEqual(badRequest("email"))
+        expect(httpResponse).toEqual(badRequest(new MissingParamError("email")))
     })
     test("Should return badRequest Error if password is not provided",async () => {
         const { sut, mockRequest } = makeSut()
         mockRequest.body.password = ""
         const httpResponse = await sut.handle(mockRequest);
-        expect(httpResponse).toEqual(badRequest("password"))
+        expect(httpResponse).toEqual(badRequest(new MissingParamError("password")))
     })
     test("Should return badRequest Error if passwordConfirmation is not provided",async () => {
         const { sut, mockRequest } = makeSut()
         mockRequest.body.passwordConfirmation = ""
         const httpResponse = await sut.handle(mockRequest);
-        expect(httpResponse).toEqual(badRequest("passwordConfirmation"))
+        expect(httpResponse).toEqual(badRequest(new MissingParamError("passwordConfirmation")))
     })
 
     test("Should return badRequest Error if password and passwordConfirmation do not match",async () => {
         const { sut, mockRequest } = makeSut()
         mockRequest.body.passwordConfirmation = "different_password"
         const httpResponse = await sut.handle(mockRequest);
-        expect(httpResponse).toEqual(badRequest("password"))
+        expect(httpResponse).toEqual(badRequest(new InvalidParamError("password")))
     })
 
     test('Should return 500 if AddAccount throws error', async () => {

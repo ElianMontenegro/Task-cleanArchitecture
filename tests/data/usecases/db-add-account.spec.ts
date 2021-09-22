@@ -4,14 +4,14 @@ import { DbAddAccount } from '../../../src/data/usecases'
 import { throwError } from '../../presentation/mocks'
 import { CheckAccountByEmailRepositorySpy, AddAccountRepositorySpy } from '../mocks/mock-db-account'
 
-type SuTypes = {
+type SutTypes = {
     sut : DbAddAccount,
     hasherSpy : HasherSpy
     checkAccountByEmailRepositorySpy : CheckAccountByEmailRepositorySpy,
     addAccountRepositorySpy : AddAccountRepositorySpy
 }
 
-const makeSut = (): SuTypes  =>{
+const makeSut = (): SutTypes  =>{
     const addAccountRepositorySpy = new AddAccountRepositorySpy()
     const checkAccountByEmailRepositorySpy = new CheckAccountByEmailRepositorySpy()
     const hasherSpy = new HasherSpy()

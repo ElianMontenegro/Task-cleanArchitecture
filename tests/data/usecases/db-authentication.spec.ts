@@ -54,6 +54,13 @@ describe('Db Authentication', () => {
         expect(model).toBeNull()
     })
 
+    test('Should throw error if HashComparer throws error', async () => {
+        const { sut, hashCompareSpy } = makeSut()
+        jest.spyOn(hashCompareSpy, 'compare').mockImplementationOnce(throwError)
+        const promise = sut.auth(mockAuthenticationParams())
+        await expect(promise).rejects.toThrow()
+      })
+
     test('Should call jwtAdapterSpy with correct params', async () => {
         const { sut, jwtAdapterSpy, loadAccountByEmailRepositorySpy } = makeSut()
         const authenticationParams = mockAuthenticationParams()
@@ -70,7 +77,7 @@ describe('Db Authentication', () => {
         expect(token.refreshToken).toBeNull()
     })
 
-    test('Should throw if UpdateAccessTokenRepository throws', async () => {
+    test('Should throw error if jwtAdapterSpy throws error', async () => {
         const { sut, jwtAdapterSpy } = makeSut()
         jest.spyOn(jwtAdapterSpy, 'encrypt').mockImplementationOnce(throwError)
         const promise = sut.auth(mockAuthenticationParams())

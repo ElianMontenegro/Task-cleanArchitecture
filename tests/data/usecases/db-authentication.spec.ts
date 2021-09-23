@@ -60,4 +60,12 @@ describe('Db Authentication', () => {
         await sut.auth(authenticationParams)
         expect(jwtAdapterSpy.email).toBe(authenticationParams.email)
     })
+
+    test('Should return null if jwtAdapterSpy return null', async () => {
+        const { sut, jwtAdapterSpy } = makeSut()
+        jwtAdapterSpy.token = null
+        const token = await sut.auth(mockAuthenticationParams())
+        expect(token.accessToken).toBeNull()
+        expect(token.refreshToken).toBeNull()
+    })
 })

@@ -1,10 +1,27 @@
+import { Collection } from 'mongodb'
 import { mongoHelper } from '.'
-import { CheckAccountByEmailRepository } from '../../../data/protocols'
+import { CheckAccountByEmailRepository, LoadAccountByEmailRepository } from '../../../data/protocols'
 
-export class AccountMongoRepository implements CheckAccountByEmailRepository{
+export class AccountMongoRepository implements CheckAccountByEmailRepository, LoadAccountByEmailRepository{
+    accountCollection : Collection
+    makeCollection = () =>{
+        this.accountCollection = mongoHelper.getCollection('accounts')
+        return  this.accountCollection
+    }
+
     async checkByEmail(email: string): Promise<CheckAccountByEmailRepository.Result>{
-        const accountCollection = mongoHelper.getCollection('accounts') 
-        const account = await accountCollection.findOne({
+        const account = await this.makeCollection().findOne({
+            email
+        },{
+            projection: {
+                _id: 1
+            }
+        })
+        return account !== null
+    }
+
+    async load(email: string): Promise<LoadAccountByEmailRepository.Result>{
+        const account = await this.makeCollection().findOne({
             email
         },{
             projection: {
@@ -13,7 +30,11 @@ export class AccountMongoRepository implements CheckAccountByEmailRepository{
                 password : 1
             }
         })
-        return account !== null
+        return {
+            id : account._id,
+            username : account.username,
+            password : account.password
+        }
     }
     
 }

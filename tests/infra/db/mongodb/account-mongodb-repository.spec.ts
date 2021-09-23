@@ -4,6 +4,11 @@ import { Collection } from 'mongodb'
 import faker from 'faker';
 
 
+const makeSut = () => {
+    return new AccountMongoRepository();
+}
+
+
 let accountCollection : Collection
 describe('AccountRepository', () => {
     beforeAll(async () => {
@@ -20,9 +25,9 @@ describe('AccountRepository', () => {
     })
 
     describe('checkByEmail()', () => {
-        
+
         test('Should return true if email exist in database', async ()=> {
-            const sut = new AccountMongoRepository();
+            const sut = makeSut()
             const accountParams = mockAddAccountParams()
             await accountCollection.insertOne(accountParams)
             const isValid = await sut.checkByEmail(accountParams.email)
@@ -30,9 +35,26 @@ describe('AccountRepository', () => {
         })
 
         test('Should return true if email exist in database', async ()=> {
-            const sut = new AccountMongoRepository();
+            const sut = makeSut()
             const isValid = await sut.checkByEmail(faker.internet.email())
             expect(isValid).toBe(false)
+        })
+
+    })
+
+    
+    describe('load()', () => {
+
+        test('Should return an account on success', async ()=> {
+            const sut = makeSut()
+            const accountParams = mockAddAccountParams()
+            await accountCollection.insertOne(accountParams)
+            const account = await sut.load(accountParams.email)
+            console.log(account);
+            expect(account).toBeTruthy()
+            expect(account.id).toBeTruthy()
+            expect(account.username).toBe(accountParams.username)
+            expect(account.password).toBe(accountParams.password)
         })
 
     })

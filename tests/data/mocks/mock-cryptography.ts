@@ -1,4 +1,4 @@
-import { Hasher, HashCompare } from '@/../../src/data/protocols'
+import { Hasher, HashCompare, AccessToken, RefreshToken } from '@/../../src/data/protocols'
 import faker from 'faker'
 
 export class HasherSpy implements Hasher{
@@ -21,4 +21,15 @@ export class HashCompareSpy implements HashCompare{
         return this.isValid
     }
     
+}
+
+export class JwtAdapterSpy implements AccessToken, RefreshToken{
+    id : string
+    email : string
+    token = faker.datatype.uuid()
+    async encrypt(id: string, email?: string):  Promise<string>{
+        this.id = id
+        this.email = email
+        return this.token
+    }
 }

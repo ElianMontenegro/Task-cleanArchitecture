@@ -1,5 +1,5 @@
 import { DbAuthentication } from '@/../../src/data/usecases/db-authentication'
-import { LoadAccountByEmailRepositorySpy, HashCompareSpy } from '../mocks'
+import { LoadAccountByEmailRepositorySpy, HashCompareSpy, JwtAdapterSpy } from '../mocks'
 import { mockAuthenticationParams } from "../../domain/mocks/mock-account"
 import { throwError } from '../../presentation/mocks'
 
@@ -7,17 +7,20 @@ type SutTypes = {
     sut : DbAuthentication
     loadAccountByEmailRepositorySpy : LoadAccountByEmailRepositorySpy
     hashCompareSpy : HashCompareSpy
+    jwtAdapterSpy : JwtAdapterSpy
 }
 
 
 const makeSut = () : SutTypes =>{
+    const jwtAdapterSpy = new JwtAdapterSpy()
     const hashCompareSpy = new HashCompareSpy()
     const loadAccountByEmailRepositorySpy = new LoadAccountByEmailRepositorySpy()
-    const sut = new DbAuthentication(loadAccountByEmailRepositorySpy, hashCompareSpy)
+    const sut = new DbAuthentication(loadAccountByEmailRepositorySpy, hashCompareSpy, jwtAdapterSpy, jwtAdapterSpy)
     return {
         sut,
         loadAccountByEmailRepositorySpy,
-        hashCompareSpy
+        hashCompareSpy,
+        jwtAdapterSpy
     }
 }
 
@@ -49,5 +52,12 @@ describe('Db Authentication', () => {
         hashCompareSpy.isValid = null
         const model = await sut.auth(mockAuthenticationParams())
         expect(model).toBeNull()
+    })
+
+    test('Should call jwtAdapterSpy with correct params', async () => {
+        const { sut, jwtAdapterSpy } = makeSut()
+        const authenticationParams = mockAuthenticationParams()
+        await sut.auth(authenticationParams)
+        expect(jwtAdapterSpy.email).toBe(authenticationParams.email)
     })
 })

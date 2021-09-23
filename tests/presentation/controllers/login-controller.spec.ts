@@ -1,6 +1,6 @@
 import faker from "faker";
-import { MissingParamError } from "../../../src/presentation/errors";
-import { badRequest, ok, serverError } from "../../../src/presentation/helpers";
+import { MissingParamError, UnauthorizedError } from "../../../src/presentation/errors";
+import { badRequest, ok, serverError, unauthorized } from "../../../src/presentation/helpers";
 import { LoginController } from '@/../../src/presentation/controller'
 import { IHttpRequest } from "../../../src/presentation/protocols";
 import { AuthenticationSpy, throwError  } from "../mocks";
@@ -51,6 +51,13 @@ describe('LoginController ', () => {
         expect(authenticationSpy.params).toEqual(mockRequest.body)
     })
 
+    test('Should return 401 if invalid credentials are provided', async () => {
+        const { sut, mockRequest, authenticationSpy } = makeSut();
+        authenticationSpy.result = null
+        const auth = await sut.handle(mockRequest)
+        expect(auth).toEqual(unauthorized())
+    })
+
     test('Should throw error 500 if AuthenticationSpy throw error', async () => {
         const { sut, mockRequest, authenticationSpy } = makeSut();
         jest.spyOn(authenticationSpy, 'auth').mockImplementationOnce(throwError)
@@ -62,7 +69,13 @@ describe('LoginController ', () => {
         const { sut, authenticationSpy , mockRequest } = makeSut()
         const httpResponse = await sut.handle(mockRequest)
         expect(httpResponse).toEqual(ok(authenticationSpy.result))
-      })
+    })
+
+    test('Should return 200 if valid credentials are provided', async () => {
+        const { sut, authenticationSpy , mockRequest } = makeSut()
+        const httpResponse = await sut.handle(mockRequest)
+        expect(httpResponse).toEqual(ok(authenticationSpy.result))
+    })
 
 })
 

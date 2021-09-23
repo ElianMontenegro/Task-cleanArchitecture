@@ -1,20 +1,23 @@
 import { DbAuthentication } from '@/../../src/data/usecases/db-authentication'
-import { LoadAccountByEmailRepositorySpy } from '../mocks/mock-db-account'
+import { LoadAccountByEmailRepositorySpy, HashCompareSpy } from '../mocks'
 import { mockAuthenticationParams } from "../../domain/mocks/mock-account"
 import { throwError } from '../../presentation/mocks'
 
 type SutTypes = {
     sut : DbAuthentication
     loadAccountByEmailRepositorySpy : LoadAccountByEmailRepositorySpy
+    hashCompareSpy : HashCompareSpy
 }
 
 
 const makeSut = () : SutTypes =>{
+    const hashCompareSpy = new HashCompareSpy()
     const loadAccountByEmailRepositorySpy = new LoadAccountByEmailRepositorySpy()
-    const sut = new DbAuthentication(loadAccountByEmailRepositorySpy)
+    const sut = new DbAuthentication(loadAccountByEmailRepositorySpy, hashCompareSpy)
     return {
         sut,
-        loadAccountByEmailRepositorySpy
+        loadAccountByEmailRepositorySpy,
+        hashCompareSpy
     }
 }
 
@@ -39,5 +42,12 @@ describe('Db Authentication', () => {
         loadAccountByEmailRepositorySpy.result = null
         const model = await sut.auth(mockAuthenticationParams())
         expect(model).toBeNull()
-      })
+    })
+
+    test('Should return null if hashCompareSpy returns null', async () => {
+        const { sut, hashCompareSpy } = makeSut()
+        hashCompareSpy.isValid = null
+        const model = await sut.auth(mockAuthenticationParams())
+        expect(model).toBeNull()
+    })
 })

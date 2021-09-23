@@ -1,8 +1,10 @@
 import { Collection } from 'mongodb'
 import { mongoHelper } from '.'
-import { CheckAccountByEmailRepository, LoadAccountByEmailRepository } from '../../../data/protocols'
+import { CheckAccountByEmailRepository, LoadAccountByEmailRepository, AddAccountRepository } from '../../../data/protocols'
+import { AddAccount } from '../../../domain/usecases'
 
-export class AccountMongoRepository implements CheckAccountByEmailRepository, LoadAccountByEmailRepository{
+export class AccountMongoRepository implements CheckAccountByEmailRepository, LoadAccountByEmailRepository, AddAccountRepository{
+  
     accountCollection : Collection
     makeCollection = () =>{
         this.accountCollection = mongoHelper.getCollection('accounts')
@@ -36,5 +38,9 @@ export class AccountMongoRepository implements CheckAccountByEmailRepository, Lo
             password : account.password
         }
     }
-    
-}
+
+    async add (data: AddAccount.Params): Promise<AddAccount.Result>{
+        const account = await this.makeCollection().insertOne(data)
+        return account.insertedId !== null
+    }
+} 

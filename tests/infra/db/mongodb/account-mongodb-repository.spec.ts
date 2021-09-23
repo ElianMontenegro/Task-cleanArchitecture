@@ -50,11 +50,20 @@ describe('AccountRepository', () => {
             const accountParams = mockAddAccountParams()
             await accountCollection.insertOne(accountParams)
             const account = await sut.load(accountParams.email)
-            console.log(account);
             expect(account).toBeTruthy()
             expect(account.id).toBeTruthy()
             expect(account.username).toBe(accountParams.username)
             expect(account.password).toBe(accountParams.password)
+        })
+
+    })
+
+    describe('add()', () => {
+
+        test('Should return true if account was success create', async ()=> {
+            const sut = makeSut()
+            const isValid = await sut.add(mockAddAccountParams())
+            expect(isValid).toBe(true)
         })
 
     })

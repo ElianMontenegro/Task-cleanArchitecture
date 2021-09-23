@@ -1,5 +1,5 @@
 import { MissingParamError } from "../../../src/presentation/errors";
-import { badRequest, ok } from "../../../src/presentation/helpers";
+import { badRequest, ok, serverError } from "../../../src/presentation/helpers";
 import { IHttpRequest, IHttpResponse } from "../../../src/presentation/protocols";
 import { IController } from '../../../src/presentation/protocols/controller-interface'
 import { Authentication } from '../../domain/usecases'
@@ -24,8 +24,8 @@ export class LoginController implements IController{
             const tokens = await this.authentication.auth({email, password})
 
             return ok(tokens)
-       } catch (error) {
-           
+       } catch (error: any) {
+           return serverError(error)
        }
     } 
 

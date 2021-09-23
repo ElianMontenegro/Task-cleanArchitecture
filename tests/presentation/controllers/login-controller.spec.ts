@@ -1,3 +1,4 @@
+import faker from "faker";
 import { MissingParamError } from "../../../src/presentation/errors";
 import { badRequest } from "../../../src/presentation/helpers";
 import { IHttpRequest, IHttpResponse } from "../../../src/presentation/protocols";
@@ -11,6 +12,9 @@ export class LoginController implements IController{
         const { email, password } = httpRequest.body
         if(!email){
             return badRequest(new MissingParamError("email"))
+        }
+        if(!password){
+            return badRequest(new MissingParamError("password"))
         }
         return {
             statusCode: 200,
@@ -31,5 +35,16 @@ describe('LoginController ', () => {
         }
         const auth = await sut.handle(httpRequest)
         expect(auth).toEqual(badRequest(new MissingParamError("email")))
+    })
+    test('Should return badRequest Error if password is not provided', async () => {
+        const sut = new LoginController();
+        const httpRequest = {
+            body: {
+                email : faker.internet.email(),
+                password : ""
+            }
+        }
+        const auth = await sut.handle(httpRequest)
+        expect(auth).toEqual(badRequest(new MissingParamError("password")))
     })
 })

@@ -1,6 +1,6 @@
 import faker from "faker";
 import { MissingParamError } from "../../../src/presentation/errors";
-import { badRequest, serverError } from "../../../src/presentation/helpers";
+import { badRequest, ok, serverError } from "../../../src/presentation/helpers";
 import { LoginController } from '@/../../src/presentation/controller'
 import { IHttpRequest } from "../../../src/presentation/protocols";
 import { AuthenticationSpy, throwError  } from "../mocks";
@@ -51,12 +51,19 @@ describe('LoginController ', () => {
         expect(authenticationSpy.params).toEqual(mockRequest.body)
     })
 
-    test('Should throw error if AuthenticationSpy throw error', async () => {
+    test('Should throw error 500 if AuthenticationSpy throw error', async () => {
         const { sut, mockRequest, authenticationSpy } = makeSut();
         jest.spyOn(authenticationSpy, 'auth').mockImplementationOnce(throwError)
         const promise = await sut.handle(mockRequest)
         expect(promise).toEqual(serverError(new Error()))
     })
 
+    test('Should return 200 if valid credentials are provided', async () => {
+        const { sut, authenticationSpy , mockRequest } = makeSut()
+        const httpResponse = await sut.handle(mockRequest)
+        expect(httpResponse).toEqual(ok(authenticationSpy.result))
+      })
+
 })
+
 

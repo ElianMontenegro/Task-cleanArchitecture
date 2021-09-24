@@ -12,7 +12,7 @@ export class LoginController implements IController{
 
     }
     async handle(httpRequest: IHttpRequest): Promise<IHttpResponse>{
-       try {
+        try {
             const { email, password } = httpRequest.body
             if(!email){
                 return badRequest(new MissingParamError("email"))
@@ -27,9 +27,9 @@ export class LoginController implements IController{
             }
             
             return ok(authenticationModel)
-       } catch (error: any) {
-           return serverError(error)
-       }
+        } catch (error: any) {
+            return serverError(error)
+        }
     } 
 
 }

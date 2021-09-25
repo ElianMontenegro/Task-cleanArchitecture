@@ -1,4 +1,5 @@
 import { BcrypterAdapter } from '../../../src/infra/cryptography'
+import { throwError } from '../../presentation/mocks/index' 
 import bcrypt, { hash } from 'bcrypt'
 
 
@@ -19,6 +20,13 @@ describe('bcrypter adapter',() => {
             const hashSpy = jest.spyOn(bcrypt, 'hash')
             await sut.hash('any_value')
             expect(hashSpy).toHaveBeenCalledWith('any_value', salt)
+        })
+
+        test('Should throw error if hash throw erro', async () => {
+            const sut = new BcrypterAdapter(salt)
+            jest.spyOn(bcrypt, 'hash').mockImplementationOnce(throwError)
+            const promise = sut.hash('any_value')
+            await expect(promise).rejects.toThrow()
         })
     })
    

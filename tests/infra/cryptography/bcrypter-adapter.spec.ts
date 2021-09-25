@@ -15,6 +15,12 @@ const salt = 10
 describe('bcrypter adapter',() => {
     
     describe('hash()', () => {
+        test('Should return a valid hash on hash success', async () => {
+            const sut = new BcrypterAdapter(salt)
+            const hash = await sut.hash('any_value')
+            expect(hash).toBe('hash')
+        })
+
         test('Should call hash with correct values', async () => {
             const sut = new BcrypterAdapter(salt)
             const hashSpy = jest.spyOn(bcrypt, 'hash')
@@ -22,7 +28,7 @@ describe('bcrypter adapter',() => {
             expect(hashSpy).toHaveBeenCalledWith('any_value', salt)
         })
 
-        test('Should throw error if hash throw erro', async () => {
+        test('Should throw error if hash throw error', async () => {
             const sut = new BcrypterAdapter(salt)
             jest.spyOn(bcrypt, 'hash').mockImplementationOnce(throwError)
             const promise = sut.hash('any_value')

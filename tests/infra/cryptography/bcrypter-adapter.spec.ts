@@ -1,11 +1,14 @@
 import { BcrypterAdapter } from '../../../src/infra/cryptography'
 import { throwError } from '../../presentation/mocks/index' 
-import bcrypt, { hash } from 'bcrypt'
+import bcrypt from 'bcrypt'
 
 
 jest.mock('bcrypt', () => ({
     async hash (): Promise<string>{
         return 'hash'
+    },
+    async compare (): Promise<boolean>{
+        return true
     }
 }))
 
@@ -37,6 +40,22 @@ describe('bcrypter adapter',() => {
             const promise = sut.hash('any_value')
             await expect(promise).rejects.toThrow()
         })
+    })
+
+    describe('compare()', () => {
+        test('Should return true if compare return true', async () => {
+            const sut = makeSut()
+            const isValid = await sut.compare('any_value', 'any_valueHash')
+            expect(isValid).toBe(true)
+        })
+
+        test('Should call hash with correct values', async () => {
+            const sut = makeSut()
+            const compareSpy = jest.spyOn(bcrypt, 'compare')
+            await sut.compare('any_value', 'any_valueHash')
+            expect(compareSpy).toHaveBeenCalledWith('any_value', 'any_valueHash')
+        })
+
     })
    
 })

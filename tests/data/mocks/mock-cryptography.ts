@@ -26,10 +26,16 @@ export class HashCompareSpy implements HashCompare{
 export class JwtAdapterSpy implements AccessToken, RefreshToken{
     id : string
     email : string
-    token = faker.datatype.uuid()
-    async encrypt(id: string, email?: string):  Promise<string>{
+    AccessToken = faker.datatype.uuid()
+    RefreshToken = faker.datatype.uuid()
+    async accessToken(id: string, secret: string, expiresIn: any):  Promise<string>{
+        this.id = id
+        return this.AccessToken
+    }
+
+    async refreshToken(id: string, email: string, secret: string, expiresIn: any):  Promise<string>{
         this.id = id
         this.email = email
-        return this.token
+        return this.RefreshToken
     }
 }

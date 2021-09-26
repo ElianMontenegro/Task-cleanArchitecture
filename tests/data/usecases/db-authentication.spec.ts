@@ -71,15 +71,23 @@ describe('Db Authentication', () => {
 
     test('Should return null if jwtAdapterSpy return null', async () => {
         const { sut, jwtAdapterSpy } = makeSut()
-        jwtAdapterSpy.token = null
+        jwtAdapterSpy.AccessToken = null
+        jwtAdapterSpy.RefreshToken = null
         const token = await sut.auth(mockAuthenticationParams())
         expect(token.accessToken).toBeNull()
         expect(token.refreshToken).toBeNull()
     })
 
-    test('Should throw error if jwtAdapterSpy throws error', async () => {
+    test('Should throw error if jwtAdapterSpy accessToken() throws error', async () => {
         const { sut, jwtAdapterSpy } = makeSut()
-        jest.spyOn(jwtAdapterSpy, 'encrypt').mockImplementationOnce(throwError)
+        jest.spyOn(jwtAdapterSpy, 'accessToken').mockImplementationOnce(throwError)
+        const promise = sut.auth(mockAuthenticationParams())
+        await expect(promise).rejects.toThrow()
+      })
+
+      test('Should throw error if jwtAdapterSpy refreshToken() throws error', async () => {
+        const { sut, jwtAdapterSpy } = makeSut()
+        jest.spyOn(jwtAdapterSpy, 'refreshToken').mockImplementationOnce(throwError)
         const promise = sut.auth(mockAuthenticationParams())
         await expect(promise).rejects.toThrow()
       })

@@ -1,3 +1,3 @@
 export interface RefreshToken {
-    encrypt: (id : string, email : string) => Promise<string>
+    refreshToken: (id : string, email : string, secret: string, expiresIn : any) => Promise<string>
 }

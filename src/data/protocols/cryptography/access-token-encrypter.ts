@@ -1,3 +1,3 @@
 export interface AccessToken {
-    encrypt: (id : string, email? : string) => Promise<string>
+    accessToken: (id : string, secret: string, expiresIn : any) => Promise<string>
 }

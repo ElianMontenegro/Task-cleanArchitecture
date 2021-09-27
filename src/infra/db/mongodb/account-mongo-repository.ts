@@ -32,14 +32,14 @@ export class AccountMongoRepository implements CheckAccountByEmailRepository, Lo
                 password : 1
             }
         })
-        if(account){
-            return {
-                id : account._id,
-                username : account.username,
-                password : account.password
-            }
+        if(!account){
+            return null
         }
-       
+        return {
+            id : account._id,
+            username : account.username,
+            password : account.password
+        }
     }
 
     async add (data: AddAccount.Params): Promise<AddAccount.Result>{

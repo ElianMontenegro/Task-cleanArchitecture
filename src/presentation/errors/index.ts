@@ -1,5 +1,5 @@
 export * from './unauthorized-error'
 export * from './server-error'
 export * from './missing-params'
-export * from './emailUse-error'
+export * from './email-exist-error'
 export * from './invalid-param'

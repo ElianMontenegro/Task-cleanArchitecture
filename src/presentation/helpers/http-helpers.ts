@@ -3,12 +3,12 @@ import { ServerError, UnauthorizedError, MissingParamError } from '../errors'
 
 export const badRequest = (error : Error): IHttpResponse => ({
   statusCode: 400,
-  body: error
+  body: error.message
 })
 
 export const forbidden = (error: Error): IHttpResponse => ({
   statusCode: 403,
-  body: error
+  body: error.message
 })
 
 export const unauthorized = (): IHttpResponse => ({

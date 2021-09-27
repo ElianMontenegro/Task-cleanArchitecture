@@ -40,7 +40,7 @@ describe('Login routes', () => {
                 .expect(200)
         })
 
-        test('Should return 403 if email already exists', async () => {
+        test('Should return 403 on signup', async () => {
             await accountCollection.insertOne(user)
             await request(app)
                 .post('/api/signup')
@@ -62,5 +62,14 @@ describe('Login routes', () => {
                 .send({ email : user.email, password : "12345" })
                 .expect(200)
         })
+
+        test('Should return 401 on login', async () => {
+            await request(app)
+                .post('/api/login')
+                .expect('Content-Type', /json/)
+                .send({ email : user.email , password : user.password })
+                .expect(401)
+        })
+
     })
 })

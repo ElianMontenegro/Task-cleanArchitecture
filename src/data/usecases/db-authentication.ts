@@ -1,7 +1,6 @@
 import { Authentication  } from "../../domain/usecases"
 import { LoadAccountByEmailRepository, HashCompare, AccessToken, RefreshToken } from "../protocols"
 
-
 export class DbAuthentication implements Authentication {
     constructor(
         private readonly loadAccountByEmailRepository : LoadAccountByEmailRepository,
@@ -23,7 +22,7 @@ export class DbAuthentication implements Authentication {
                 }
             }
         } 
-        return null as any
+        return null
     }
     
 }

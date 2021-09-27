@@ -22,6 +22,7 @@ export class LoginController implements IController{
             }
 
             const authenticationModel = await this.authentication.auth({email, password})
+
             if (!authenticationModel) {
                 return unauthorized()
             }

@@ -5,6 +5,7 @@ import { LoginController } from '@/../../src/presentation/controller'
 import { IHttpRequest } from "../../../src/presentation/protocols";
 import { AuthenticationSpy, throwError  } from "../mocks";
 
+
 type SutTypes = {
     sut : LoginController,
     mockRequest : IHttpRequest,

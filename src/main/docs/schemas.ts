@@ -1,7 +1,8 @@
-import { loginParamsSchema, accountSchema, errorSchema }from './schemas/index'
+import { loginParamsSchema, accountSchema, errorSchema, signupParamsSchema }from './schemas/index'
 
 export default {
     loginParams : loginParamsSchema,
     account : accountSchema,
-    error : errorSchema
+    error : errorSchema,
+    signupParams : signupParamsSchema
 }

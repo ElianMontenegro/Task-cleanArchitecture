@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest",
     "test:coverage": "npm test --  --coverage",
-    "dev": "nodemon"
+    "dev": "nodemon",
+    "test:coveralls": "npm run test:coverage && coveralls < coverage/lcov.info"
   },
   "keywords": [],
   "author": "",

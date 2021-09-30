@@ -6,10 +6,10 @@ import { LoadAccountByToken } from '../../../src/domain/usecases'
 
 class LoadAccountByTokenSpy implements LoadAccountByToken {
     accessToken = 'any_token'
-    id : any
+    result : any
     async load (accessToken: string): Promise<LoadAccountByToken.Result>{
         this.accessToken = accessToken
-        return this.id
+        return this.result
     }
 
 }
@@ -46,6 +46,13 @@ describe('AuthMiddleware', () => {
         const { sut, loadAccountByTokenSpy, httpRequest }= makeSut()
         await sut.handle(httpRequest)
         expect(loadAccountByTokenSpy.accessToken).toBe(httpRequest.body.accessToken)
+    })
+
+    test('Should return null if LoadAccountByToken return null', async () => {
+        const { sut, loadAccountByTokenSpy, httpRequest }= makeSut()
+        loadAccountByTokenSpy.result = null
+        const httpResponse = await sut.handle(httpRequest)
+        expect(httpResponse).toEqual(forbidden(new AccessDeniedError()))
     })
 })
 

@@ -2,20 +2,9 @@ import { forbidden, ok, serverError } from '../../../src/presentation/helpers'
 import { AccessDeniedError } from '../../../src/presentation/errors'
 import { AuthMiddleware } from '../../../src/presentation/middleware'
 import { IHttpRequest } from '../../../src/presentation/protocols'
-import { LoadAccountByToken } from '../../../src/domain/usecases'
-import faker from 'faker'
+import { LoadAccountByTokenSpy } from '../mocks'
 
-class LoadAccountByTokenSpy implements LoadAccountByToken {
-    accessToken = 'any_token'
-    result = {
-        id: faker.datatype.uuid()
-      }
-    async load (accessToken: string): Promise<LoadAccountByToken.Result>{
-        this.accessToken = accessToken
-        return this.result
-    }
 
-}
 
 type SutType = {
     sut : AuthMiddleware

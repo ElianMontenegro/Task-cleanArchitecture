@@ -1,12 +1,15 @@
-import { forbidden, serverError } from '../../../src/presentation/helpers'
+import { forbidden, ok, serverError } from '../../../src/presentation/helpers'
 import { AccessDeniedError } from '../../../src/presentation/errors'
 import { AuthMiddleware } from '../../../src/presentation/middleware'
 import { IHttpRequest } from '../../../src/presentation/protocols'
 import { LoadAccountByToken } from '../../../src/domain/usecases'
+import faker from 'faker'
 
 class LoadAccountByTokenSpy implements LoadAccountByToken {
     accessToken = 'any_token'
-    result : any
+    result = {
+        id: faker.datatype.uuid()
+      }
     async load (accessToken: string): Promise<LoadAccountByToken.Result>{
         this.accessToken = accessToken
         return this.result
@@ -53,6 +56,12 @@ describe('AuthMiddleware', () => {
         loadAccountByTokenSpy.result = null
         const httpResponse = await sut.handle(httpRequest)
         expect(httpResponse).toEqual(forbidden(new AccessDeniedError()))
+    })
+
+    test('Should return 200 if LoadAccountByToken return an account', async () => {
+        const { sut, loadAccountByTokenSpy, httpRequest }= makeSut()
+        const httpResponse = await sut.handle(httpRequest)
+        expect(httpResponse).toEqual(ok({accountId : loadAccountByTokenSpy.result.id}))
     })
 })
 

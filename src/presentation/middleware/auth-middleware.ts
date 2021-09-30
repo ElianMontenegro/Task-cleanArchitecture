@@ -20,11 +20,8 @@ export class AuthMiddleware implements Middleware{
             }
             return forbidden(new AccessDeniedError())
         
-        } catch (error) {
-            return {
-                statusCode : 500,
-                body : serverError(new Error)
-            }
+        } catch (error: any) {
+            return serverError(error)
         }
     }
 

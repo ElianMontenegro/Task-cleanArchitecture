@@ -61,7 +61,7 @@ describe('JwtAdapter', () => {
             expect(verifySpy).toHaveBeenCalledWith('any_token', 'any_secret')
         })
 
-        test.skip('Should return a value on verify success', async () => {
+        test('Should return a value on verify success', async () => {
             const { sut } = makeSut()
             const value = await sut.descryp('any_token', 'any_secret')
             expect(value).toBe('any_value')

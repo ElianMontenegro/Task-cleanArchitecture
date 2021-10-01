@@ -1,4 +1,4 @@
 
 export interface Descrypter {
-    descryp: (token : string) => Promise<string>
+    descryp: (token : string, secret : string) => Promise<string>
 }

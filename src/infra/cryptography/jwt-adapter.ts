@@ -1,8 +1,8 @@
-import { AccessToken, RefreshToken } from '../../../src/data/protocols'
+import { AccessToken, RefreshToken, Descrypter } from '../../../src/data/protocols'
 import jwt from 'jsonwebtoken'
 
-export class JwtAdapter implements AccessToken, RefreshToken {
-
+export class JwtAdapter implements AccessToken, RefreshToken, Descrypter {
+ 
     async accessToken (id: string, secret : string, expiresIn : any): Promise<string>{
         const token = jwt.sign({ id : id }, secret , { expiresIn: expiresIn });
         return token
@@ -12,6 +12,9 @@ export class JwtAdapter implements AccessToken, RefreshToken {
         const token = jwt.sign({ id : id, email: email}, secret , { expiresIn: expiresIn });
         return token
     }
-    
+
+    async descryp (token: string, secret : string): Promise<string>{
+        return jwt.verify(token, secret) as string
+    }  
 }
 

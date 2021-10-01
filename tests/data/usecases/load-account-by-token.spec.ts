@@ -1,20 +1,7 @@
-import  { LoadAccountIdByToken } from '../../../src/domain/usecases'
+import { LoadAccountByToken } from '../../../src/data/usecases'
 import { DescrypterSpy } from '../mocks'
-import { Descrypter } from '@/../../src/data/protocols'
+import { throwError } from '../../presentation/mocks'
 import faker from 'faker'
-
-
-export class LoadAccountByToken implements LoadAccountIdByToken{
-    constructor(private readonly descrypter : Descrypter){}
-
-    async load (accessToken: string): Promise<LoadAccountIdByToken.Result>{
-        const accountId = await this.descrypter.descryp(accessToken)
-        if(!accountId){
-            return null
-        }
-        return { id : accountId}
-    }
-}
 
 type SutType = {
     sut : LoadAccountByToken,
@@ -43,4 +30,14 @@ describe('LoadAccountByToken', () => {
         await sut.load(token)
         expect(descrypterSpy.ciphertext).toEqual(token)
     })
+
+    test('Should return null if DescrypterSpy return null', async () => {
+        const { sut, descrypterSpy} = makeSut()
+        descrypterSpy.plainText = null
+        const account = await sut.load(token)
+        expect(account).toBeNull()
+    })
+
 })
+
+

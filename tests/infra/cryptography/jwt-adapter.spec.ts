@@ -34,5 +34,11 @@ describe('JwtAdapter', () => {
             await sut.accessToken(accessTokenParams.id , accessTokenParams.secret, accessTokenParams.expiresIn)
             expect(signSpy).toHaveBeenCalledWith({ id : accessTokenParams.id } , accessTokenParams.secret, { expiresIn : accessTokenParams.expiresIn })
         })
+
+        test('Should return a token if on sign success' , async () => {
+            const { sut, accessTokenParams } = makeSut()
+            const accessToken = await sut.accessToken(accessTokenParams.id , accessTokenParams.secret, accessTokenParams.expiresIn)
+            expect(accessToken).toBe('any_token')
+        })
     })
 })

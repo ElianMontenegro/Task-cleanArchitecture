@@ -1,21 +1,20 @@
 import { AccessDeniedError } from "../errors"
 import { forbidden, ok, serverError } from "../helpers"
 import { IHttpRequest, IHttpResponse, Middleware } from "../protocols"
-import { LoadAccountByToken } from '../../domain/usecases'
+import { LoadAccountIdByToken } from '../../domain/usecases'
 
 
 export class AuthMiddleware implements Middleware{
 
-    constructor(private readonly loadAccountByToken : LoadAccountByToken){}
+    constructor(private readonly loadAccountIdByToken : LoadAccountIdByToken){}
 
     async handle(httpRequest: IHttpRequest): Promise<IHttpResponse>{
-
         try {
             const { accessToken } = httpRequest.body
             if(accessToken){
-                const account = await this.loadAccountByToken.load(accessToken)
+                const account = await this.loadAccountIdByToken.load(accessToken)
                 if(account){
-                    return ok({ accountId: account.id })
+                    return ok({ accountId: account })
                 }
             }
             return forbidden(new AccessDeniedError())
@@ -24,5 +23,4 @@ export class AuthMiddleware implements Middleware{
             return serverError(error)
         }
     }
-
 }

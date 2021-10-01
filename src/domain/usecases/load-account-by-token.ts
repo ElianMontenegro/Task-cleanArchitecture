@@ -1,8 +1,8 @@
-export interface LoadAccountByToken {
-    load: (accessToken : string) => Promise<LoadAccountByToken.Result>
+export interface LoadAccountIdByToken {
+    load: (accessToken : string) => Promise<LoadAccountIdByToken.Result>
 }
 
-export namespace LoadAccountByToken {
+export namespace LoadAccountIdByToken {
     export type Result = {
         id : string
     }

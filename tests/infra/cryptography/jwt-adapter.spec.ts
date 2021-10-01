@@ -1,4 +1,4 @@
-import { AccessToken, RefreshToken , Descrypter } from '../../../src/data/protocols'
+import { throwError } from '../../presentation/mocks'
 import jwt from 'jsonwebtoken'
 import { JwtAdapter } from '../../../src/infra/cryptography'
 import faker from 'faker'
@@ -40,5 +40,13 @@ describe('JwtAdapter', () => {
             const accessToken = await sut.accessToken(accessTokenParams.id , accessTokenParams.secret, accessTokenParams.expiresIn)
             expect(accessToken).toBe('any_token')
         })
+
+        test('Should throw error if sign throw error' , async () => {
+            const { sut, accessTokenParams } = makeSut()
+            jest.spyOn(jwt, 'sign').mockImplementation(throwError)
+            const accessToken = sut.accessToken(accessTokenParams.id , accessTokenParams.secret, accessTokenParams.expiresIn)
+            await expect(accessToken).rejects.toThrowError()
+        })
     })
 })
+

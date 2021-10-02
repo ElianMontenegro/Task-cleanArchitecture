@@ -1,9 +1,18 @@
-import { MissingParamError } from "../../../src/presentation/errors"
+import { DataInUseError, MissingParamError } from "../../../src/presentation/errors"
 import { badRequest } from "../../../src/presentation/helpers"
 import { AddTaskController } from '../../../src/presentation/controller'
+import { CheckTaskByTitleSpy } from '../mocks'
+import { IHttpRequest } from "../../../src/presentation/protocols"
+
 import faker from 'faker'
 
-const makeSut = () => {
+type TypeSub = {
+    sut : AddTaskController
+    httpRequest : IHttpRequest
+    checkTaskByTitleSpy : CheckTaskByTitleSpy
+}
+
+const makeSut = (): TypeSub => {
     const httpRequest = {
         body : {
             title : faker.name.title(),
@@ -11,35 +20,45 @@ const makeSut = () => {
             accountId : faker.datatype.uuid()
         }
     }
-    const sut = new AddTaskController()
+    const checkTaskByTitleSpy = new CheckTaskByTitleSpy()
+    const sut = new AddTaskController(checkTaskByTitleSpy)
     return {
         sut,
-        httpRequest
+        httpRequest,
+        checkTaskByTitleSpy
     }
 }
 
 
 describe('AddTaskController', () => {
+
     test('Should return error if title is not provided', async () =>{
         const { sut, httpRequest } = makeSut()
         httpRequest.body.title = ""       
-        const res = await sut.handle(httpRequest)
-        expect(res).toEqual(badRequest(new MissingParamError('title')))
+        const response = await sut.handle(httpRequest)
+        expect(response).toEqual(badRequest(new MissingParamError('title')))
     })
 
     test('Should return error if content is not provided', async () =>{
         const { sut, httpRequest } = makeSut()
         httpRequest.body.content = ""
-        const res = await sut.handle(httpRequest)
-        expect(res).toEqual(badRequest(new MissingParamError('content')))
+        const response = await sut.handle(httpRequest)
+        expect(response).toEqual(badRequest(new MissingParamError('content')))
     })
 
     test('Should return error if accountId is not provided', async () =>{
         const { sut, httpRequest } = makeSut()
         httpRequest.body.accountId = ""
-        const res = await sut.handle(httpRequest)
-        expect(res).toEqual(badRequest(new MissingParamError('accountId')))
+        const response = await sut.handle(httpRequest)
+        expect(response).toEqual(badRequest(new MissingParamError('accountId')))
     })    
+
+    test('Should return error if task name is already exist', async () => {
+        const { sut, httpRequest, checkTaskByTitleSpy } = makeSut()
+        checkTaskByTitleSpy.result = true
+        const response = await sut.handle(httpRequest)
+        expect(response).toEqual(badRequest(new DataInUseError('title')))
+    })
 
     
 })

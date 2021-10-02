@@ -7,7 +7,8 @@ const makeSut = () => {
     const httpRequest = {
         body : {
             title : faker.name.title(),
-            content : faker.lorem.words()
+            content : faker.lorem.words(),
+            accountId : faker.datatype.uuid()
         }
     }
     const sut = new AddTaskController()
@@ -32,4 +33,13 @@ describe('AddTaskController', () => {
         const res = await sut.handle(httpRequest)
         expect(res).toEqual(badRequest(new MissingParamError('content')))
     })
+
+    test('Should return error if accountId is not provided', async () =>{
+        const { sut, httpRequest } = makeSut()
+        httpRequest.body.accountId = ""
+        const res = await sut.handle(httpRequest)
+        expect(res).toEqual(badRequest(new MissingParamError('accountId')))
+    })    
+
+    
 })

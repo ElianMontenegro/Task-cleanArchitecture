@@ -8,13 +8,13 @@ import { LoadAccountIdByTokenSpy, throwError } from '../mocks'
 
 type SutType = {
     sut : AuthMiddleware
-    httpRequest : IHttpRequest
+    httpRequest : any
     loadAccountIdByTokenSpy : LoadAccountIdByTokenSpy
 }
 
 const makeSut = (): SutType => {
     const httpRequest = {
-        body :  { accessToken: 'any_token' }
+        accessToken: 'any_token' 
     }
     const loadAccountIdByTokenSpy = new LoadAccountIdByTokenSpy()
     const sut = new AuthMiddleware(loadAccountIdByTokenSpy)
@@ -29,7 +29,7 @@ const makeSut = (): SutType => {
 describe('AuthMiddleware', () => {
     test('Should return 403 if no authorization in header', async () => {
         const { sut, httpRequest }= makeSut()
-        httpRequest.body = {}
+        httpRequest.accessToken = ''
         const httpResponse  = await sut.handle(httpRequest)
         expect(httpResponse).toEqual(forbidden(new AccessDeniedError()))
     })
@@ -37,7 +37,7 @@ describe('AuthMiddleware', () => {
     test('Should call LoadAccountByToken with correct accessToken', async () => {
         const { sut, loadAccountIdByTokenSpy, httpRequest }= makeSut()
         await sut.handle(httpRequest)
-        expect(loadAccountIdByTokenSpy.accessToken).toBe(httpRequest.body.accessToken)
+        expect(loadAccountIdByTokenSpy.accessToken).toBe(httpRequest.accessToken)
     })
 
     test('Should return null if LoadAccountByToken return null', async () => {

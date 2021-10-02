@@ -8,9 +8,9 @@ export class AuthMiddleware implements Middleware{
 
     constructor(private readonly loadAccountIdByToken : LoadAccountIdByToken){}
 
-    async handle(httpRequest: IHttpRequest): Promise<IHttpResponse>{
+    async handle(httpRequest: AuthMiddleware.Request): Promise<IHttpResponse>{
         try {
-            const { accessToken } = httpRequest.body
+            const { accessToken } = httpRequest
             if(accessToken){
                 const account = await this.loadAccountIdByToken.load(accessToken)
                 if(account){
@@ -22,5 +22,11 @@ export class AuthMiddleware implements Middleware{
         } catch (error: any) {
             return serverError(error)
         }
+    }
+}
+
+export namespace AuthMiddleware {
+    export type Request = {
+        accessToken : string
     }
 }

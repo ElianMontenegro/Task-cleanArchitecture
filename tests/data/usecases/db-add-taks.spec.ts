@@ -8,7 +8,7 @@ export class DbAddTask implements AddTask {
     async add (dataTask: AddTask.Params): Promise<AddTask.Result>{
         const isExist = await this.checkTaskByTitleRepository.checkByTitle(dataTask.title)
         if(!isExist){
-            return  { id :'2' , content : '2', title : 'a' , accountId : '2' }
+      
         }
         return null
     }
@@ -30,5 +30,12 @@ describe('AddTask usecase', () => {
         checkTaskByTitleRepositorySky.result = true
         const httpResponse = await sut.add(mockAddTaskParams())
         expect(httpResponse).toBeNull()
+    })
+
+    test('Should call checkTaskByTitle with correct value', async () => {
+        const { sut, checkTaskByTitleRepositorySky } = makeSut()
+        const AddTaskParams = mockAddTaskParams()
+        await sut.add(AddTaskParams)
+        expect(checkTaskByTitleRepositorySky.title).toBe(AddTaskParams.title)
     })
 })

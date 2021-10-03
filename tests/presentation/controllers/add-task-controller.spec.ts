@@ -1,7 +1,7 @@
 import { DataInUseError, MissingParamError } from "../../../src/presentation/errors"
-import { badRequest, ok } from "../../../src/presentation/helpers"
+import { badRequest, ok, serverError } from "../../../src/presentation/helpers"
 import { AddTaskController } from '../../../src/presentation/controller'
-import { CheckTaskByTitleSpy, AddTaskSpy } from '../mocks'
+import { CheckTaskByTitleSpy, AddTaskSpy, throwError } from '../mocks'
 import { IHttpRequest } from "../../../src/presentation/protocols"
 
 import faker from 'faker'
@@ -68,6 +68,13 @@ describe('AddTaskController', () => {
         const { sut, httpRequest, addTaskSpy } = makeSut()
         const response = await sut.handle(httpRequest)
         expect(response).toEqual(ok(addTaskSpy.result))
+    })
+
+    test('Should return 500 if addTaskSpy throw error', async () => {
+        const { sut, httpRequest, addTaskSpy } = makeSut()
+        jest.spyOn(addTaskSpy, 'add').mockImplementationOnce(throwError)
+        const httpResponse = await sut.handle(httpRequest)
+        expect(httpResponse).toEqual(serverError(new Error()))
     })
 
     

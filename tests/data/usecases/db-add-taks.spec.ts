@@ -55,4 +55,15 @@ describe('AddTask usecase', () => {
         expect(httpResponse).toBeNull()
     })
 
+    test('Should return a task if addTask on success', async () => {
+        const { sut, addAccountRepositorySpy } = makeSut()
+        const httpResponse = await sut.add(mockAddTaskParams())
+        expect(addAccountRepositorySpy.result).toEqual({
+            id : httpResponse.id,
+            title : httpResponse.title,
+            content : httpResponse.content,
+            accountId : httpResponse.accountId
+        })
+    })
+
 })

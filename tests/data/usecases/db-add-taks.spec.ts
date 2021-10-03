@@ -2,6 +2,7 @@ import { AddTask } from '../../../src/domain/usecases'
 import { mockAddTaskParams } from '../../domain/mocks'
 import { CheckTaskByTitleRepository, AddTaskRepository } from '../../../src/data/protocols'
 import { CheckTaskByTitleRepositorySpy, AddTaskRepositorySpy } from '../mocks'
+import { throwError } from '../../presentation/mocks'
 
 export class DbAddTask implements AddTask {
     constructor(
@@ -64,6 +65,13 @@ describe('AddTask usecase', () => {
             content : httpResponse.content,
             accountId : httpResponse.accountId
         })
+    })
+
+    test('Should throw error if addAccountRepositorySpy throw error', async () => {
+        const { sut, addAccountRepositorySpy } = makeSut()
+        jest.spyOn(addAccountRepositorySpy, 'add').mockImplementationOnce(throwError)
+        const promise = sut.add(mockAddTaskParams())
+        await expect(promise).rejects.toThrowError()
     })
 
 })

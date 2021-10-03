@@ -1,7 +1,7 @@
 import { DataInUseError, MissingParamError } from "../../../src/presentation/errors"
 import { badRequest, ok, serverError } from "../../../src/presentation/helpers"
 import { AddTaskController } from '../../../src/presentation/controller'
-import { CheckTaskByTitleSpy, AddTaskSpy, throwError } from '../mocks'
+import { AddTaskSpy, throwError } from '../mocks'
 import { IHttpRequest } from "../../../src/presentation/protocols"
 
 import faker from 'faker'
@@ -9,7 +9,6 @@ import faker from 'faker'
 type TypeSub = {
     sut : AddTaskController
     httpRequest : IHttpRequest
-    checkTaskByTitleSpy : CheckTaskByTitleSpy,
     addTaskSpy : AddTaskSpy
 }
 
@@ -23,12 +22,10 @@ const makeSut = (): TypeSub => {
         }
     }
     const addTaskSpy = new AddTaskSpy()
-    const checkTaskByTitleSpy = new CheckTaskByTitleSpy()
-    const sut = new AddTaskController(checkTaskByTitleSpy, addTaskSpy)
+    const sut = new AddTaskController(addTaskSpy)
     return {
         sut,
         httpRequest,
-        checkTaskByTitleSpy,
         addTaskSpy
     }
 }
@@ -58,8 +55,8 @@ describe('AddTaskController', () => {
     })    
 
     test('Should return error if task name is already exist', async () => {
-        const { sut, httpRequest, checkTaskByTitleSpy } = makeSut()
-        checkTaskByTitleSpy.result = true
+        const { sut, httpRequest, addTaskSpy } = makeSut()
+        addTaskSpy.result = null
         const response = await sut.handle(httpRequest)
         expect(response).toEqual(badRequest(new DataInUseError('title')))
     })

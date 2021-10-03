@@ -1,13 +1,5 @@
-import { CheckTaskByTitle, AddTask } from '../../../src/data/protocols'
+import { AddTask } from '../../../src/domain/usecases'
 import faker from 'faker'
-export class CheckTaskByTitleSpy implements CheckTaskByTitle{
-    title : string
-    result = false
-    async checkByTitle(title: string): Promise<Boolean>{
-        this.title = title
-        return this.result
-    }
-}
 
 export class AddTaskSpy implements AddTask {
     title : string 

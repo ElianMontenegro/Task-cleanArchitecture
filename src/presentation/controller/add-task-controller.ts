@@ -1,12 +1,10 @@
 import { MissingParamError, DataInUseError } from "../errors"
 import { badRequest, ok, serverError } from "../helpers"
 import { IController, IHttpRequest, IHttpResponse } from "../protocols"
-import { CheckTaskByTitleRepository } from '../../data/protocols/db'
 import { AddTask } from '../../domain/usecases'
 
 export class AddTaskController implements IController {
     constructor (
-        private readonly checkTaskByTitle : CheckTaskByTitleRepository,
         private readonly addTask : AddTask
 
     ) {}
@@ -20,11 +18,10 @@ export class AddTaskController implements IController {
                     return badRequest(new MissingParamError(params))
                 }
             }
-            const exist = await this.checkTaskByTitle.checkByTitle(title)
-            if(exist){
+            const task = await this.addTask.add({ title, content, accountId })
+            if(!task){
                 return badRequest(new DataInUseError('title'))
             }
-            const task = await this.addTask.add({ title, content, accountId })
             return ok(task)
         } catch (error: any) {
             return serverError(error)

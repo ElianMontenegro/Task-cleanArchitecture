@@ -1,12 +1,12 @@
 import { MissingParamError, DataInUseError } from "../errors"
 import { badRequest, ok, serverError } from "../helpers"
 import { IController, IHttpRequest, IHttpResponse } from "../protocols"
-import { CheckTaskByTitle, AddTask } from '../../data/protocols/db'
-
+import { CheckTaskByTitleRepository } from '../../data/protocols/db'
+import { AddTask } from '../../domain/usecases'
 
 export class AddTaskController implements IController {
     constructor (
-        private readonly checkTaskByTitle : CheckTaskByTitle,
+        private readonly checkTaskByTitle : CheckTaskByTitleRepository,
         private readonly addTask : AddTask
 
     ) {}

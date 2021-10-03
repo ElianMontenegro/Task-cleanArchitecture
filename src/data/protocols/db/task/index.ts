@@ -1,2 +1,1 @@
-export * from './checkTaskByTitle'
-export * from './addTask'
+export * from './check-task-by-title'

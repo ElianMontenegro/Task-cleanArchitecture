@@ -1,1 +1,2 @@
-export * from './check-task-by-title'
+export * from './check-task-by-title-repository'
+export * from './add-task-repository'

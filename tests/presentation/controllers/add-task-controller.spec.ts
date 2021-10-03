@@ -1,7 +1,7 @@
 import { DataInUseError, MissingParamError } from "../../../src/presentation/errors"
-import { badRequest } from "../../../src/presentation/helpers"
+import { badRequest, ok } from "../../../src/presentation/helpers"
 import { AddTaskController } from '../../../src/presentation/controller'
-import { CheckTaskByTitleSpy } from '../mocks'
+import { CheckTaskByTitleSpy, AddTaskSpy } from '../mocks'
 import { IHttpRequest } from "../../../src/presentation/protocols"
 
 import faker from 'faker'
@@ -9,23 +9,27 @@ import faker from 'faker'
 type TypeSub = {
     sut : AddTaskController
     httpRequest : IHttpRequest
-    checkTaskByTitleSpy : CheckTaskByTitleSpy
+    checkTaskByTitleSpy : CheckTaskByTitleSpy,
+    addTaskSpy : AddTaskSpy
 }
 
 const makeSut = (): TypeSub => {
     const httpRequest = {
         body : {
+            id : faker.datatype.uuid(),
             title : faker.name.title(),
             content : faker.lorem.words(),
             accountId : faker.datatype.uuid()
         }
     }
+    const addTaskSpy = new AddTaskSpy()
     const checkTaskByTitleSpy = new CheckTaskByTitleSpy()
-    const sut = new AddTaskController(checkTaskByTitleSpy)
+    const sut = new AddTaskController(checkTaskByTitleSpy, addTaskSpy)
     return {
         sut,
         httpRequest,
-        checkTaskByTitleSpy
+        checkTaskByTitleSpy,
+        addTaskSpy
     }
 }
 
@@ -58,6 +62,12 @@ describe('AddTaskController', () => {
         checkTaskByTitleSpy.result = true
         const response = await sut.handle(httpRequest)
         expect(response).toEqual(badRequest(new DataInUseError('title')))
+    })
+
+    test('Should if valid credentials are provided', async () => {
+        const { sut, httpRequest, addTaskSpy } = makeSut()
+        const response = await sut.handle(httpRequest)
+        expect(response).toEqual(ok(addTaskSpy.result))
     })
 
     

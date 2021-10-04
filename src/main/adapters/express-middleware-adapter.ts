@@ -8,10 +8,9 @@ export const adapterMiddleware = (middleware : Middleware) => {
             accessToken : req.headers["authorization"]
         }
         const httpResponse = await middleware.handle(httpRequest)
-        if(httpResponse.statusCode = 200){
-            // Object.assign(req, httpResponse.body)
-            req.accountId = httpResponse.body
-            next()
+        if(httpResponse.statusCode == 200){
+            Object.assign(req, httpResponse.body)
+            return next()
         }
         res.status(httpResponse.statusCode).json({
             error: httpResponse.body.message

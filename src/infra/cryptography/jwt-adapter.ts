@@ -13,8 +13,8 @@ export class JwtAdapter implements AccessToken, RefreshToken, Descrypter {
         return token
     }
 
-    async descryp (token: string, secret : string): Promise<string>{
-        return jwt.verify(token, secret) as string
+    async descryp (token: string, secret : string): Promise<any>{
+        return jwt.verify(token, secret) 
     }  
 }
 

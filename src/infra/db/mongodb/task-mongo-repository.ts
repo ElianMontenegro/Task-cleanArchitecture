@@ -23,9 +23,10 @@ export class TaskRepository implements CheckTaskByTitleRepository, AddTaskReposi
         return task !== null
     }
 
-    async add(data : AddTask.Params):  Promise<AddTask.Result>{
+    async add(data : AddTask.Params): Promise<AddTask.Result>{
         const task = await this.makeCollection().insertOne(data)
-        return task   
+        return task
+   
     }
     
 

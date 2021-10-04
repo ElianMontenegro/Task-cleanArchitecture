@@ -6,13 +6,12 @@ import { AddTask } from '../../domain/usecases'
 export class AddTaskController implements IController {
     constructor (
         private readonly addTask : AddTask
-
     ) {}
     async handle(httpRequest: IHttpRequest): Promise<IHttpResponse>{
         try {
             const { title, content } = httpRequest.body
             const accountId = httpRequest.accountId
-            const paramsRequired = ["title", "content", "accountId"]
+            const paramsRequired = ["title", "content"]
             for (const params of paramsRequired) {
                 if(!httpRequest.body[params]){
                     return badRequest(new MissingParamError(params))

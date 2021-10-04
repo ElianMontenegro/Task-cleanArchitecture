@@ -1,26 +1,9 @@
-import { AddTask } from '../../../src/domain/usecases'
+import { DbAddTask } from '../../../src/data/usecases'
 import { mockAddTaskParams } from '../../domain/mocks'
-import { CheckTaskByTitleRepository, AddTaskRepository } from '../../../src/data/protocols'
 import { CheckTaskByTitleRepositorySpy, AddTaskRepositorySpy } from '../mocks'
 import { throwError } from '../../presentation/mocks'
 
-export class DbAddTask implements AddTask {
-    constructor(
-        private readonly checkTaskByTitleRepository : CheckTaskByTitleRepository,
-        private readonly addTaskRepository : AddTaskRepository
-    ) {}
-    async add (dataTask: AddTask.Params): Promise<AddTask.Result>{
-        const isExist = await this.checkTaskByTitleRepository.checkByTitle(dataTask.title)
-        if(!isExist){
-            const account = await this.addTaskRepository.add(dataTask)
-            if(account){
-                return account
-            }
-        }
-        return null
-    }
 
-}
 
 const makeSut = () =>  {
     const addAccountRepositorySpy = new AddTaskRepositorySpy()

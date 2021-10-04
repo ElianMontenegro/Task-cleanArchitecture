@@ -24,7 +24,7 @@ describe('Login routes', () => {
 
     beforeEach(async () => {
         accountCollection = mongoHelper.getCollection('accounts')
-        accountCollection.deleteMany({})
+        await accountCollection.deleteMany({})
     })
 
     afterAll(async () => {

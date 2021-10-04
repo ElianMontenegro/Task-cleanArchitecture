@@ -34,7 +34,7 @@ describe('AccountRepository', () => {
             expect(isValid).toBe(true)
         })
 
-        test('Should return true if email exist in database', async ()=> {
+        test('Should return false if email not exist in database', async ()=> {
             const sut = makeSut()
             const isValid = await sut.checkByEmail(faker.internet.email())
             expect(isValid).toBe(false)

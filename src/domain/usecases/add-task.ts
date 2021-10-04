@@ -9,9 +9,6 @@ export namespace AddTask {
         accountId : string
     }
     export type Result = {
-        id : string
-        title : string,
-        content : string,
-        accountId : string
+        insertedId : any
     }
 }

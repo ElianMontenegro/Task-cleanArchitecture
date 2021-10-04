@@ -41,4 +41,13 @@ describe('TaskRepository', () => {
         })
     })
 
+    describe('add', () => {
+        test('Should return a task if added successfully', async () => {
+            const sut = makeSut()
+            const task = await sut.add(mockAddTaskParams())
+            expect(true).toBe(task.insertedId !== null)
+        })
+
+    })
+
 })

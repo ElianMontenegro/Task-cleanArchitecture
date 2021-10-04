@@ -16,10 +16,7 @@ export class AddTaskRepositorySpy implements AddTaskRepository{
     content : string
     accountId : string
     result = {
-        id: faker.datatype.uuid(),
-        title: faker.name.title(),
-        content: faker.lorem.words(),
-        accountId : faker.datatype.uuid()
+        insertedId: faker.datatype.uuid()
     }
     async add(data: AddTask.Params): Promise<AddTask.Result>{
         this.title = data.title

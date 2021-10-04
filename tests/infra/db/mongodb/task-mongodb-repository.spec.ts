@@ -32,6 +32,13 @@ describe('TaskRepository', () => {
             const isExist = await sut.checkByTitle(addTaskParams.title)
             expect(isExist).toBe(true)
         })
+
+        test('Should Return false if task title not exist in database', async () => {
+            const sut = makeSut()
+            const addTaskParams = mockAddTaskParams()
+            const isExist = await sut.checkByTitle(addTaskParams.title)
+            expect(isExist).toBe(false)
+        })
     })
 
 })

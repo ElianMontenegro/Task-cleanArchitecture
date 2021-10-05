@@ -1,5 +1,7 @@
 import { Authentication  } from "../../domain/usecases"
 import { LoadAccountByEmailRepository, HashCompare, AccessToken, RefreshToken } from "../protocols"
+import { config as dotenv } from 'dotenv'
+dotenv()
 
 export class DbAuthentication implements Authentication {
     constructor(
@@ -14,8 +16,8 @@ export class DbAuthentication implements Authentication {
         if(account){
             const isValid = await this.hashCompare.compare(authenticationParams.password, account.password)
             if (isValid) {
-                const accessToken = await this.accessToken.accessToken(account.id, "secret", 300);
-                const refreshToken = await this.refreshToken.refreshToken(account.id, authenticationParams.email, "secretRefresh", 1999);
+                const accessToken = await this.accessToken.accessToken(account.id, process.env.SECRET_ACCESS_TOKEN, 30000);
+                const refreshToken = await this.refreshToken.refreshToken(account.id, authenticationParams.email, process.env.SECRET_REFRESH_TOKEN, 19990);
                 return {
                     accessToken : accessToken,
                     refreshToken : refreshToken

@@ -1,4 +1,4 @@
-import { Hasher, HashCompare, AccessToken, RefreshToken } from '@/../../src/data/protocols'
+import { Hasher, HashCompare, AccessToken, RefreshToken, Descrypter } from '@/../../src/data/protocols'
 import faker from 'faker'
 
 export class HasherSpy implements Hasher{
@@ -38,4 +38,17 @@ export class JwtAdapterSpy implements AccessToken, RefreshToken{
         this.email = email
         return this.RefreshToken
     }
+
+
 }
+
+export class DescrypterSpy implements Descrypter {
+    ciphertext : string
+    plainText = faker.datatype.uuid()
+    async descryp (ciphertext: string): Promise<string>{
+        this.ciphertext = ciphertext
+        return this.plainText
+    }
+    
+}
+

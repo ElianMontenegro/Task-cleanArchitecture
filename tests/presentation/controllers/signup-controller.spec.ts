@@ -3,7 +3,7 @@ import { SignUpController } from '@/../../src/presentation/controller'
 import { IHttpRequest } from '@/../../src/presentation/protocols'
 import { AddAccountSpy, throwError, AuthenticationSpy } from '../mocks'
 import faker from 'faker'
-import { EmailInUseError, InvalidParamError, MissingParamError } from '../../../src/presentation/errors'
+import { DataInUseError, InvalidParamError, MissingParamError } from '../../../src/presentation/errors'
 
 type SutTypes = {
     sut: SignUpController
@@ -90,7 +90,7 @@ describe("SignUpController", () => {
         const { sut, addAccountSpy , mockRequest } = makeSut()
         addAccountSpy.result = false
         const Response = await sut.handle(mockRequest)
-        expect(Response).toEqual(forbidden(new EmailInUseError()))
+        expect(Response).toEqual(forbidden(new DataInUseError('email')))
     })
 
     test('Should return 200 if valid data is provided', async () => {

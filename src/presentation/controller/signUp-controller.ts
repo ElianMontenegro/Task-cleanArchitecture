@@ -1,7 +1,7 @@
 import { IController, IHttpRequest, IHttpResponse } from '@/../../src/presentation/protocols'
 import { badRequest, forbidden, ok, serverError } from '@/../../src/presentation/helpers'
 import { AddAccount, Authentication } from '../../domain/usecases'
-import { EmailInUseError, InvalidParamError, MissingParamError } from '../errors'
+import { DataInUseError, InvalidParamError, MissingParamError } from '../errors'
 
 
 export class SignUpController implements IController{
@@ -31,7 +31,7 @@ export class SignUpController implements IController{
             })
             
             if (!isValid) {
-                return forbidden(new EmailInUseError())
+                return forbidden(new DataInUseError('email'))
             }
 
             const authenticationModel = await this.authentication.auth({

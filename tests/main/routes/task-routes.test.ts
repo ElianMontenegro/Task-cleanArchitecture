@@ -51,6 +51,14 @@ describe('Task Routes', () => {
                 .send(mockAddTaskParams())
                 .expect(200)
         })
+
+        test('Should retrun 403 if accessToken is not provided', async () => {
+            await request(app)
+                .post('/api/add-task')
+                .expect("Content-Type", /json/)
+                .send(mockAddTaskParams())
+                .expect(403)
+        })
     })
 })
 

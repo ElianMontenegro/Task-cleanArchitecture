@@ -1,7 +1,6 @@
 import { forbidden, ok, serverError } from '../../../src/presentation/helpers'
 import { AccessDeniedError } from '../../../src/presentation/errors'
 import { AuthMiddleware } from '../../../src/presentation/middleware'
-import { IHttpRequest } from '../../../src/presentation/protocols'
 import { LoadAccountIdByTokenSpy, throwError } from '../mocks'
 
 
@@ -50,7 +49,7 @@ describe('AuthMiddleware', () => {
     test('Should return 200 if LoadAccountByToken return an account', async () => {
         const { sut, loadAccountIdByTokenSpy, httpRequest }= makeSut()
         const httpResponse = await sut.handle(httpRequest)
-        expect(httpResponse).toEqual(ok({accountId : loadAccountIdByTokenSpy.result.id}))
+        expect(httpResponse.statusCode).toEqual(ok({accountId : loadAccountIdByTokenSpy.result.id}).statusCode)
     })
 
     test('Should return 500 if LoadAccountByToken throw', async () => {

@@ -47,12 +47,6 @@ describe('AddTaskController', () => {
         expect(response).toEqual(badRequest(new MissingParamError('content')))
     })
 
-    test('Should return error if accountId is not provided', async () =>{
-        const { sut, httpRequest } = makeSut()
-        httpRequest.body.accountId = ""
-        const response = await sut.handle(httpRequest)
-        expect(response).toEqual(badRequest(new MissingParamError('accountId')))
-    })    
 
     test('Should return error if task name is already exist', async () => {
         const { sut, httpRequest, addTaskSpy } = makeSut()

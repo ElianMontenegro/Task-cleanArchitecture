@@ -20,6 +20,10 @@ export default {
     tags : [{
         name : 'Login',
         description : 'login related APIs'
+    },
+    {
+        name : 'Tasks',
+        description : 'Tasks APIs'
     }],
     paths,
     schemas,

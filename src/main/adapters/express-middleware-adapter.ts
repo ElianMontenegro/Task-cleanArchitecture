@@ -1,11 +1,11 @@
 import { Middleware } from "../../presentation/protocols";
 import { NextFunction, Request, Response } from "express";
-
+import { getToken } from '../../presentation/helpers'
 
 export const adapterMiddleware = (middleware : Middleware) => {
     return async (req : Request, res : Response, next : NextFunction ) => {
         const httpRequest = {
-            accessToken : req.headers["authorization"]
+            accessToken : getToken(req)
         }
         const httpResponse = await middleware.handle(httpRequest)
         if(httpResponse.statusCode == 200){

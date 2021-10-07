@@ -3,7 +3,7 @@ import { LoadAllTaskRepository } from '../../data/protocols'
 
 export class DbLoadAllTask implements LoadAllTask{
     constructor(private readonly loadAllTaskRepository : LoadAllTaskRepository){}
-    async load(): Promise<any>{
+    async load(): Promise<LoadAllTask.Result>{
         const tasks = this.loadAllTaskRepository.loadAllTaks() 
         if(tasks){
             return tasks

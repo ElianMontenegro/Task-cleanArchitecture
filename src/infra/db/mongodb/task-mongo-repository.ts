@@ -1,10 +1,9 @@
 import { Collection } from 'mongodb'
 import { mongoHelper } from '.'
-
 import { CheckTaskByTitleRepository, AddTaskRepository, LoadAllTaskRepository } from '../../../../src/data/protocols/db/task'
 import { AddTask } from '../../../domain/usecases'
 
-export class TaskRepository implements CheckTaskByTitleRepository, AddTaskRepository, LoadAllTaskRepository{
+export class TaskMongoRepository implements CheckTaskByTitleRepository, AddTaskRepository, LoadAllTaskRepository{
     
   
     taskCollection : Collection

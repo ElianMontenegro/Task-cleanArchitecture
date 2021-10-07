@@ -59,6 +59,12 @@ describe('TaskRepository', () => {
             expect(task).toEqual([addTaskParams])
         })
 
+        test('Should return array empty', async () => {
+            const sut = makeSut()
+            const task = await sut.loadAllTaks()
+            expect(task).toEqual([])
+        })
+
     })
 
 })

@@ -6,3 +6,12 @@ export const mockAddTaskParams = (): AddTask.Params => ({
     content : faker.lorem.word(),
     accountId : faker.datatype.uuid()
 }) 
+
+export const mockLoadAllTaskResult = (): any => ({
+    tasks : [{
+        id : faker.datatype.uuid(),
+        title : faker.name.title(),
+        content : faker.random.words(10),
+        accountId: faker.datatype.uuid()
+    }]
+})

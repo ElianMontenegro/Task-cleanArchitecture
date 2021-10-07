@@ -1,6 +1,7 @@
 import { LoadAllTaskSpy } from '../mocks/mock-task'
 import { LoadAllTaskController } from '../../../src/presentation/controller'
-import { notFound, ok } from '../../../src/presentation/helpers'
+import { notFound, ok, serverError } from '../../../src/presentation/helpers'
+import { throwError } from '../mocks' 
 import faker from 'faker'
 
 const makeSut = () => {
@@ -34,5 +35,12 @@ describe('LoadAllTaskController', () => {
         ]}
         const response  = await sut.handle({})
         expect(response).toEqual(ok(loadAllTaskSpy.tasks))
+    })
+
+    test('Should return 500 loadAllTaskSpy throw error' , async () => {
+        const { sut, loadAllTaskSpy } = makeSut()
+        jest.spyOn(loadAllTaskSpy, 'load').mockImplementationOnce(throwError)
+        const response  = await sut.handle({})
+        expect(response).toEqual(serverError(new Error()))
     })
 })

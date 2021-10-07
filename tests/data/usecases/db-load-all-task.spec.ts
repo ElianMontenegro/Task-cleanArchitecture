@@ -1,6 +1,6 @@
 import { DbLoadAllTask } from '../../../src/data/usecases'
 import { LoadAllTaskRepositorySpy } from '../mocks'
- 
+ import { mockLoadAllTaskResult } from '../../domain/mocks'
 
 const makeSut = () => {
     const loadAllTaskRepositorySpy = new LoadAllTaskRepositorySpy()
@@ -18,5 +18,13 @@ describe('LoadAllTask use cases', () => {
         loadAllTaskRepositorySpy.result = null
         const tasks = await sut.load()
         expect(tasks).toBeNull()
+    })
+
+    test('Should return a tasks if LoadAllTaskRepositorySpy return a tasks', async () => {
+        const { sut, loadAllTaskRepositorySpy } = makeSut()
+        const loadAllTaskResult = mockLoadAllTaskResult()
+        loadAllTaskRepositorySpy.result = loadAllTaskResult
+        const tasks = await sut.load()
+        expect(tasks).toEqual(loadAllTaskResult)
     })
 })

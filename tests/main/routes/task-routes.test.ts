@@ -46,7 +46,7 @@ describe('Task Routes', () => {
             const accessToken = await mockAccessToken()
             await request(app)
                 .post('/api/add-task')
-                .set('Authorization', accessToken)
+                .set('Authorization', `Bearer ${accessToken}`)
                 .expect("Content-Type", /json/)
                 .send(mockAddTaskParams())
                 .expect(200)

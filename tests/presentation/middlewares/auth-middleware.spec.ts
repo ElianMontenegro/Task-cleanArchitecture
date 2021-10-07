@@ -49,7 +49,7 @@ describe('AuthMiddleware', () => {
     test('Should return 200 if LoadAccountByToken return an account', async () => {
         const { sut, loadAccountIdByTokenSpy, httpRequest }= makeSut()
         const httpResponse = await sut.handle(httpRequest)
-        expect(httpResponse.statusCode).toEqual(ok({accountId : loadAccountIdByTokenSpy.result.id}).statusCode)
+        expect(httpResponse.statusCode).toEqual(ok({accountId : loadAccountIdByTokenSpy.result}).statusCode)
     })
 
     test('Should return 500 if LoadAccountByToken throw', async () => {

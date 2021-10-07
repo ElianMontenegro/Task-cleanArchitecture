@@ -26,9 +26,8 @@ export class AuthenticationSpy implements Authentication{
 
 export class LoadAccountIdByTokenSpy implements LoadAccountIdByToken {
     accessToken = 'any_token'
-    result = {
-        id: faker.datatype.uuid()
-      }
+    result = faker.datatype.uuid()
+    
     async load (accessToken: string): Promise<LoadAccountIdByToken.Result>{
         this.accessToken = accessToken
         return this.result

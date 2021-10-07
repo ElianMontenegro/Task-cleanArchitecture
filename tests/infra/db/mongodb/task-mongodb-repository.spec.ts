@@ -50,4 +50,15 @@ describe('TaskRepository', () => {
 
     })
 
+    describe('loadAllTask', () => {
+        test('Should return a tasks', async () => {
+            const sut = makeSut()
+            const addTaskParams = mockAddTaskParams()
+            await taskCollection.insertOne(addTaskParams)
+            const task = await sut.loadAllTaks()
+            expect(task).toEqual([addTaskParams])
+        })
+
+    })
+
 })

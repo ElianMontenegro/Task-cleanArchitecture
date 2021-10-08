@@ -1,7 +1,7 @@
 import { IHttpResponse } from "../protocols";
 import { Controller } from "../protocols/Icontroller";
 import { LoadAllTaskByUser } from '../../domain/usecases'
-import { notFound } from "../helpers";
+import { notFound, ok } from "../helpers";
 
 export class LoadAllTaskByUserController implements Controller{
     constructor(private readonly loadAllTaskByUser : LoadAllTaskByUser){}
@@ -12,6 +12,7 @@ export class LoadAllTaskByUserController implements Controller{
             if (!tasks) {
                 return notFound(new Error('there are not tasks'))
             }
+            return ok(tasks)
         } catch (error) {
             console.log(error);
         }

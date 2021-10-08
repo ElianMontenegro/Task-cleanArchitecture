@@ -1,6 +1,6 @@
 import { LoadAllTaskByUserController } from '../../../src/presentation/controller'
-import { notFound, ok } from '../../../src/presentation/helpers'
-import { LoadAllTaskByUserSpy } from '../mocks' 
+import { notFound, ok, serverError } from '../../../src/presentation/helpers'
+import { LoadAllTaskByUserSpy, throwError } from '../mocks' 
 import { mockLoadAllTaskResult } from '../../domain/mocks'
 import faker from 'faker'
 
@@ -36,4 +36,10 @@ describe('LoadAllTaskByUserController', () => {
         expect(httpResponse).toEqual(ok(loadAllTaskResult))
     })
 
+    test('Should return 500 if loadAllTaskByUserSpy throw error', async () => {
+        const { sut, loadAllTaskByUserSpy } = makeSut()
+        jest.spyOn(loadAllTaskByUserSpy, 'loadByUser').mockImplementationOnce(throwError)
+        const httpResponse = await sut.handle({accountId : ''})
+        expect(httpResponse).toEqual(serverError(new Error()))
+    })
 })

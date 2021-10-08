@@ -1,6 +1,6 @@
 
 export interface LoadAllTaskByUser {
-    loadByUser : (accountId : string) => Promise<LoadAllTaskByUser.Result>
+    loadByUser : (accountId : string) => Promise<Array<LoadAllTaskByUser.Result>>
 }
 
 export namespace LoadAllTaskByUser {

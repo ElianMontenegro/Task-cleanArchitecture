@@ -1,11 +1,11 @@
-import { IHttpResponse } from "../protocols";
+import { IHttpResponse, IHttpRequest } from "../protocols";
 import { Controller } from "../protocols/Icontroller";
 import { LoadAllTaskByUser } from '../../domain/usecases'
 import { notFound, ok, serverError } from "../helpers";
 
 export class LoadAllTaskByUserController implements Controller{
     constructor(private readonly loadAllTaskByUser : LoadAllTaskByUser){}
-    async handle (httpRequest: LoadAllTaskByUserController.Request): Promise<IHttpResponse>{
+    async handle (httpRequest: IHttpRequest): Promise<IHttpResponse>{
         try {
             const { accountId } = httpRequest
             const tasks = await this.loadAllTaskByUser.loadByUser(accountId) 

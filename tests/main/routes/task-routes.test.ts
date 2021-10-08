@@ -89,8 +89,10 @@ describe('Task Routes', () => {
         test('Should retrun 200 if return tasks array', async () => {
             const accessToken = await mockAccessToken()
             const decode = await mockDecodifyAccessToken(accessToken)
+
             const addTaskParams = mockAddTaskParams()
             addTaskParams.accountId = decode.id
+            
             await taskCollection.insertOne(addTaskParams)
             await request(app)
                 .get('/api/load-all-task-by-user')
@@ -100,8 +102,10 @@ describe('Task Routes', () => {
         })
 
         test.skip('Should retrun 404 if return array empty of tasks', async () => {
+            const accessToken = await mockAccessToken()
             await request(app)
                 .get('/api/load-all-task')
+                .set('Authorization', `Bearer ${accessToken}`)
                 .expect("Content-Type", /json/)
                 .expect(404)
         })

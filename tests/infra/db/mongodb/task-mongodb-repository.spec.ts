@@ -1,10 +1,10 @@
 import { Collection } from 'mongodb'
 import { mongoHelper } from '../../../../src/infra/db/mongodb'
 import { mockAddTaskParams } from '../../../domain/mocks'
-import { TaskRepository } from '../../../../src/infra/db/mongodb'
+import { TaskMongoRepository } from '../../../../src/infra/db/mongodb'
 
 const makeSut = () => {
-    return new TaskRepository()
+    return new TaskMongoRepository()
 }
 
 

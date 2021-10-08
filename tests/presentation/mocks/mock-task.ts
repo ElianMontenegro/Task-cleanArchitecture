@@ -1,4 +1,4 @@
-import { AddTask, LoadAllTask } from '../../../src/domain/usecases'
+import { AddTask, LoadAllTask, LoadAllTaskByUser } from '../../../src/domain/usecases'
 import faker from 'faker'
 
 export class AddTaskSpy implements AddTask {
@@ -18,10 +18,17 @@ export class AddTaskSpy implements AddTask {
 }
 
 export class LoadAllTaskSpy implements LoadAllTask {
-    
     tasks : any
     async load(): Promise<any>{
         return this.tasks
     }
-    
+}
+
+export class LoadAllTaskByUserSpy implements LoadAllTaskByUser {
+    accountId : string
+    tasks : any
+    async loadByUser(accountId : string): Promise<any>{
+        this.accountId = accountId
+        return this.tasks
+    }
 }

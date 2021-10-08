@@ -67,4 +67,22 @@ describe('TaskRepository', () => {
 
     })
 
+    describe('loadAllTaskByUser', () => {
+        test('Should return a tasks', async () => {
+            const sut = makeSut()
+            const addTaskParams = mockAddTaskParams()
+            await taskCollection.insertOne(addTaskParams)
+            const task = await sut.loadAllTaksByUser(addTaskParams.accountId)
+            expect(task).toEqual([addTaskParams])
+        })
+
+        test('Should return array empty', async () => {
+            const sut = makeSut()
+            const addTaskParams = mockAddTaskParams()
+            const task = await sut.loadAllTaksByUser(addTaskParams.accountId)
+            expect(task).toEqual([])
+        })
+
+    })
+
 })

@@ -1,11 +1,10 @@
 import { Collection } from 'mongodb'
 import { mongoHelper } from '.'
-import { CheckTaskByTitleRepository, AddTaskRepository, LoadAllTaskRepository } from '../../../../src/data/protocols/db/task'
+import { CheckTaskByTitleRepository, AddTaskRepository, LoadAllTaskRepository, LoadAllTaskByUserRepository } from '../../../../src/data/protocols/db/task'
 import { AddTask } from '../../../domain/usecases'
 
-export class TaskMongoRepository implements CheckTaskByTitleRepository, AddTaskRepository, LoadAllTaskRepository{
-    
-  
+export class TaskMongoRepository implements CheckTaskByTitleRepository, AddTaskRepository, LoadAllTaskRepository, LoadAllTaskByUserRepository{
+   
     taskCollection : Collection
     makeCollection = () => {
         this.taskCollection = mongoHelper.getCollection('tasks')
@@ -34,5 +33,9 @@ export class TaskMongoRepository implements CheckTaskByTitleRepository, AddTaskR
         return tasks
     }
     
+    async loadAllTaksByUser (id: string):  Promise<any>{
+        const tasks = await this.makeCollection().find({accountId : id}).toArray()
+        return tasks
+    }
 
 }

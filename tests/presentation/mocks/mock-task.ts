@@ -32,3 +32,4 @@ export class LoadAllTaskByUserSpy implements LoadAllTaskByUser {
         return this.tasks
     }
 }
+

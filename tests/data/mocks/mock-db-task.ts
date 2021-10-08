@@ -1,4 +1,4 @@
-import { CheckTaskByTitleRepository, AddTaskRepository, LoadAllTaskRepository } from '../../../src/data/protocols'
+import { CheckTaskByTitleRepository, AddTaskRepository, LoadAllTaskRepository, LoadAllTaskByUserRepository } from '../../../src/data/protocols'
 import { AddTask } from '../../../src/domain/usecases'
 import { mockLoadAllTaskResult } from '../../domain/mocks'
 import faker from 'faker'
@@ -33,6 +33,15 @@ export class AddTaskRepositorySpy implements AddTaskRepository{
 export class LoadAllTaskRepositorySpy implements LoadAllTaskRepository{
     result = mockLoadAllTaskResult()
     async loadAllTaks(): Promise<any>{
+        return this.result
+    }
+}
+
+export class LoadAllTaskByUserRepositorySpy implements LoadAllTaskByUserRepository{
+    id : string
+    result = mockLoadAllTaskResult()
+    async loadAllTaksByUser(id : string): Promise<any>{
+        this.id = id
         return this.result
     }
 }

@@ -11,6 +11,12 @@ dotenv()
 let taskCollection : Collection
 let accountCollection : Collection
 
+
+const mockDecodifyAccessToken = async (token : string): Promise<any> => {
+    const accessToken = jwt.verify(token, process.env.SECRET_ACCESS_TOKEN) 
+    return accessToken
+}
+
 const mockAccessToken = async (): Promise<string> => {
     const user = await accountCollection.insertOne({
         username : "elian",
@@ -72,6 +78,28 @@ describe('Task Routes', () => {
         })
 
         test('Should retrun 404 if return array empty of tasks', async () => {
+            await request(app)
+                .get('/api/load-all-task')
+                .expect("Content-Type", /json/)
+                .expect(404)
+        })
+    })
+
+    describe('loadAllTaskByUser Route', () => {
+        test('Should retrun 200 if return tasks array', async () => {
+            const accessToken = await mockAccessToken()
+            const decode = await mockDecodifyAccessToken(accessToken)
+            const addTaskParams = mockAddTaskParams()
+            addTaskParams.accountId = decode.id
+            await taskCollection.insertOne(addTaskParams)
+            await request(app)
+                .get('/api/load-all-task-by-user')
+                .set('Authorization', `Bearer ${accessToken}`)
+                .expect("Content-Type", /json/)
+                .expect(200)
+        })
+
+        test.skip('Should retrun 404 if return array empty of tasks', async () => {
             await request(app)
                 .get('/api/load-all-task')
                 .expect("Content-Type", /json/)

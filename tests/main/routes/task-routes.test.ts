@@ -60,5 +60,23 @@ describe('Task Routes', () => {
                 .expect(403)
         })
     })
+
+    describe('loadAllTask Route', () => {
+        test('Should retrun 200 if return tasks array', async () => {
+            const addTaskParams = mockAddTaskParams()
+            await taskCollection.insertOne(addTaskParams)
+            await request(app)
+                .get('/api/load-all-task')
+                .expect("Content-Type", /json/)
+                .expect(200)
+        })
+
+        test('Should retrun 404 if return array empty of tasks', async () => {
+            await request(app)
+                .get('/api/load-all-task')
+                .expect("Content-Type", /json/)
+                .expect(404)
+        })
+    })
 })
 

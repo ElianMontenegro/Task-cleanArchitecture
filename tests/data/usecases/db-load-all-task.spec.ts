@@ -16,7 +16,7 @@ const makeSut = () => {
 describe('LoadAllTask use cases', () => {
     test('Should return null if LoadAllTaskRepositorySpy return null', async () => {
         const { sut, loadAllTaskRepositorySpy } = makeSut()
-        loadAllTaskRepositorySpy.result = null
+        loadAllTaskRepositorySpy.result = []
         const tasks = await sut.load()
         expect(tasks).toBeNull()
     })

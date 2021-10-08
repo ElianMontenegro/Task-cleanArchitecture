@@ -1,6 +1,7 @@
 import { LoadAllTaskByUserController } from '../../../src/presentation/controller'
-import { notFound } from '../../../src/presentation/helpers'
+import { notFound, ok } from '../../../src/presentation/helpers'
 import { LoadAllTaskByUserSpy } from '../mocks' 
+import { mockLoadAllTaskResult } from '../../domain/mocks'
 import faker from 'faker'
 
 const makeSut = () => {
@@ -26,4 +27,13 @@ describe('LoadAllTaskByUserController', () => {
         await sut.handle(httpRequest)
         expect(loadAllTaskByUserSpy.accountId).toEqual(httpRequest.accountId)
     })
+
+    test('Should return a tasks if loadAllTaskByUser return a tasks', async () => {
+        const { sut, loadAllTaskByUserSpy } = makeSut()
+        const loadAllTaskResult = mockLoadAllTaskResult()
+        loadAllTaskByUserSpy.tasks = loadAllTaskResult
+        const httpResponse = await sut.handle({accountId : ''})
+        expect(httpResponse).toEqual(ok(loadAllTaskResult))
+    })
+
 })

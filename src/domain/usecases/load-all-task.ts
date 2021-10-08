@@ -1,8 +1,8 @@
-export interface LoadAllTask {
-    load : () => Promise<LoadAllTask.Result>
+export interface LoadAllTask{
+    load : () => Promise<Array<LoadAllTask.Result>>
 }
 
-export namespace LoadAllTask {
+export namespace LoadAllTask   {
     export type Result = {
         id : string,
         title : string,

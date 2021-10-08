@@ -1,4 +1,5 @@
+import { LoadAllTask } from "../../../../domain/usecases";
 
 export interface LoadAllTaskRepository {
-    loadAllTaks: () => Promise<any>
+    loadAllTaks: () => Promise<Array<LoadAllTask.Result>>
 }

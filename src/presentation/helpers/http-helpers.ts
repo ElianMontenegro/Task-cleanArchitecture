@@ -19,7 +19,7 @@ export const forbidden = (error: Error): IHttpResponse => ({
 
 export const notFound = (error: Error): IHttpResponse => ({
   statusCode: 404,
-  body: error
+  body: error.message
 })
 
 export const serverError = (error: Error): IHttpResponse => ({

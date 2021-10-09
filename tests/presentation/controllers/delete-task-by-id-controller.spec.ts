@@ -1,4 +1,4 @@
-import { badRequest, ok, serverError } from '../../../src/presentation/helpers/http-helpers'
+import { badRequest, notFound, ok, serverError } from '../../../src/presentation/helpers/http-helpers'
 import { MissingParamError } from '../../../src/presentation/errors'
 import { DeleteTaskByIdController } from '../../../src/presentation/controller'
 import { DeleteTaskByIdSpy, throwError } from '../mocks'
@@ -42,5 +42,12 @@ describe(' DeleteTaskById ', () => {
         jest.spyOn(deleteTaskByIdSpy, 'delete').mockImplementationOnce(throwError)
         const httpResponses = await sut.handle(httpRequest)
         expect(httpResponses).toEqual(serverError(new Error()))
+    })
+
+    test('Should return 404 deleteTaskByIdSpy if return false', async () => {
+        const { sut, httpRequest, deleteTaskByIdSpy } = makeSut()
+        deleteTaskByIdSpy.isDelete = false
+        const httpResponses = await sut.handle(httpRequest)
+        expect(httpResponses).toEqual(notFound(new Error('task not found')))
     })
 })

@@ -1,4 +1,4 @@
 
 export interface DeleteTaskById {
-    delete: (id : string) => Promise<void>
+    delete: (id : string) => Promise<Boolean>
 }

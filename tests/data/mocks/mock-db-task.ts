@@ -48,8 +48,10 @@ export class LoadAllTaskByUserRepositorySpy implements LoadAllTaskByUserReposito
 
 export class DeleteTaskByIdRepositorySpy implements DeleteTaskByIdRepository{
     id : string
+    accountId : string
     result = true
-    async delete(id: string): Promise<boolean>{
+    async delete(id: string, accountId : string): Promise<boolean>{
+        this.accountId = accountId
         this.id = id
         return this.result
     }

@@ -35,8 +35,10 @@ export class LoadAllTaskByUserSpy implements LoadAllTaskByUser {
 
 export class DeleteTaskByIdSpy implements DeleteTaskById{
     id : string
+    accountId : string
     isDelete = true
-    async delete(id: string): Promise<Boolean>{
+    async delete(id: string, accountId : string): Promise<Boolean>{
+        this.accountId = accountId
         this.id = id
         return this.isDelete
     }

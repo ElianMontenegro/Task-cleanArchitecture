@@ -6,7 +6,8 @@ import faker from 'faker'
 
 const makeSut = () => {
     const httpRequest = {
-        params : { id : faker.datatype.uuid() }
+        params : { id : faker.datatype.uuid() },
+        accountId : faker.datatype.uuid()
     }
     const deleteTaskByIdSpy = new DeleteTaskByIdSpy()
     const sut = new DeleteTaskByIdController(deleteTaskByIdSpy)
@@ -29,6 +30,7 @@ describe(' DeleteTaskById ', () => {
         const { sut, httpRequest, deleteTaskByIdSpy } = makeSut()
         await sut.handle(httpRequest)
         expect(deleteTaskByIdSpy.id).toEqual(httpRequest.params.id)
+        expect(deleteTaskByIdSpy.accountId).toEqual(httpRequest.accountId)
     })
 
     test('Should return 200 deleteTaskByIdSpy if task was delete', async () => {

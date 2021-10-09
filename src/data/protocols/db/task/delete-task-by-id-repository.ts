@@ -1,4 +1,4 @@
 
 export interface DeleteTaskByIdRepository {
-    delete: (id : string) => Promise<Boolean>
+    delete: (id : string, accountId : string) => Promise<Boolean>
 }

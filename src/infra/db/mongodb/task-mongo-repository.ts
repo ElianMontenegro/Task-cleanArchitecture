@@ -51,8 +51,8 @@ export class TaskMongoRepository implements CheckTaskByTitleRepository,
         return tasks
     }
 
-    async delete(id: string): Promise<Boolean>{
-        const tasks = await this.makeCollection().deleteOne({ _id : id})
+    async delete(id: string, accountId : string): Promise<Boolean>{
+        const tasks = await this.makeCollection().deleteOne({ _id : id, accountId : accountId })
         if(tasks.deletedCount === 1){
             return true
         }

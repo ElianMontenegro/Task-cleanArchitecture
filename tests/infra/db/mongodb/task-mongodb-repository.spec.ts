@@ -97,7 +97,7 @@ describe('TaskRepository', () => {
         test('Should return false if was not success', async () => {
             const sut = makeSut()
             const addTaskParams = mockAddTaskParams()
-            const task = await sut.delete('id_dont_exist', addTaskParams.accountId)
+            const task = await sut.delete('6161dfa17faa6a3c6ee50b7f', addTaskParams.accountId)
             expect(task).toBe(false)
         })
 

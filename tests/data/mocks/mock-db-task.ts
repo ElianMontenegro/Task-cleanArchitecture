@@ -1,4 +1,4 @@
-import { CheckTaskByTitleRepository, AddTaskRepository, LoadAllTaskRepository, LoadAllTaskByUserRepository } from '../../../src/data/protocols'
+import { CheckTaskByTitleRepository, AddTaskRepository, LoadAllTaskRepository, LoadAllTaskByUserRepository, DeleteTaskByIdRepository } from '../../../src/data/protocols'
 import { AddTask } from '../../../src/domain/usecases'
 import { mockLoadAllTaskResult } from '../../domain/mocks'
 import faker from 'faker'
@@ -45,3 +45,14 @@ export class LoadAllTaskByUserRepositorySpy implements LoadAllTaskByUserReposito
         return this.result
     }
 }
+
+export class DeleteTaskByIdRepositorySpy implements DeleteTaskByIdRepository{
+    id : string
+    result = true
+    async delete(id: string): Promise<boolean>{
+        this.id = id
+        return this.result
+    }
+
+}
+

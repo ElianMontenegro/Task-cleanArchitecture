@@ -1,7 +1,6 @@
 import { MissingParamError } from "../errors";
 import { badRequest, notFound, ok, serverError } from "../helpers";
-import { IHttpRequest, IHttpResponse } from "../protocols";
-import { IController } from "../protocols/controller-interface";
+import { IHttpRequest, IHttpResponse , IController } from "../protocols";
 import { DeleteTaskById } from '../../domain/usecases'
 
 export class DeleteTaskByIdController implements IController{

@@ -1,4 +1,4 @@
-import { AddTask, LoadAllTask, LoadAllTaskByUser, DeleteTaskById } from '../../../src/domain/usecases'
+import { AddTask, LoadAllTask, LoadAllTaskByUser, DeleteTaskById, UpdateTaskById } from '../../../src/domain/usecases'
 import faker from 'faker'
 
 export class AddTaskSpy implements AddTask {
@@ -41,6 +41,18 @@ export class DeleteTaskByIdSpy implements DeleteTaskById{
         this.accountId = accountId
         this.id = id
         return this.isDelete
+    }
+
+}
+
+export class UpdateTaskByIdSpy implements UpdateTaskById{
+    id : string
+    accountId : string
+    isUpdate = true
+    async update(id: string, accountId : string): Promise<Boolean>{
+        this.accountId = accountId
+        this.id = id
+        return this.isUpdate
     }
 
 }

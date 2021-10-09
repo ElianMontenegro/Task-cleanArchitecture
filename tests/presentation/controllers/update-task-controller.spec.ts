@@ -1,6 +1,7 @@
 import { UpdateTaskController } from '../../../src/presentation/controller'
 import { badRequest } from '../../../src/presentation/helpers'
 import { MissingParamError } from '../../../src/presentation/errors'
+import { UpdateTaskByIdSpy } from '../mocks'
 
 import faker from 'faker'
 const makeSut = () => {
@@ -8,10 +9,12 @@ const makeSut = () => {
         params : { id : faker.datatype.uuid() },
         accountId : faker.datatype.uuid()
     }
-    const sut = new UpdateTaskController()
+    const updateTaskByIdSpy = new UpdateTaskByIdSpy()
+    const sut = new UpdateTaskController(updateTaskByIdSpy)
     return {
         sut,
-        httpRequest
+        httpRequest,
+        updateTaskByIdSpy
     }
 }
 
@@ -21,5 +24,12 @@ describe('UpdateTaskController', () => {
         httpRequest.params.id = ''
         const httpResponse = await sut.handle(httpRequest)
         expect(httpResponse).toEqual(badRequest(new MissingParamError('id')))
-   })
+    })
+
+    test('Should call updateTaskByIdSpy with correct values', async () => {
+        const { sut, httpRequest, updateTaskByIdSpy } = makeSut()
+        await sut.handle(httpRequest)
+        expect(updateTaskByIdSpy.id).toEqual(httpRequest.params.id)
+        expect(updateTaskByIdSpy.accountId).toEqual(httpRequest.accountId)
+    })
 })

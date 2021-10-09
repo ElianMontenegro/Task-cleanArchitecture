@@ -1,5 +1,5 @@
 import { UpdateTaskController } from '../../../src/presentation/controller'
-import { badRequest, notFound, serverError } from '../../../src/presentation/helpers'
+import { badRequest, notFound, ok, serverError } from '../../../src/presentation/helpers'
 import { MissingParamError } from '../../../src/presentation/errors'
 import { throwError, UpdateTaskByIdSpy } from '../mocks'
 
@@ -40,10 +40,16 @@ describe('UpdateTaskController', () => {
         expect(httpResponse).toEqual(serverError(new Error()))
     })
 
-    test('Should return error if updateTaskByIdSpy return false', async () => {
+    test('Should return not found if updateTaskByIdSpy return false', async () => {
         const { sut, httpRequest, updateTaskByIdSpy } = makeSut()
         updateTaskByIdSpy.isUpdate = false
         const httpResponse = await sut.handle(httpRequest)
         expect(httpResponse).toEqual(notFound(new Error('tasks not found')))
+    })
+
+    test('Should return ok if updateTaskByIdSpy return true', async () => {
+        const { sut, httpRequest, updateTaskByIdSpy } = makeSut()
+        const httpResponse = await sut.handle(httpRequest)
+        expect(httpResponse.statusCode).toEqual(ok(httpResponse).statusCode)
     })
 })

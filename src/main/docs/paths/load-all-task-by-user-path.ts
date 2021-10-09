@@ -1,11 +1,14 @@
-export const LoadAllTaskPath = {
+export const LoadAllTaskByUserPath = {
     get : {
         tags : ['Tasks'],
-        summary : 'API to get all tasks',
-        description : 'this route can be use all users',
+        summary: 'Api to get all task by user',
+        description : 'this route can be used if you are authenticated',
+        security: [{
+            bearerAuth : []
+        }], 
         responses : {
             '200' : {
-                description : 'tasks',
+                description : 'tasks by user',
                 content : {
                     'application/json' : {
                         schema : {
@@ -21,5 +24,6 @@ export const LoadAllTaskPath = {
                 $ref : '#/components/serverError'
             }
         }
+        
     }
 }

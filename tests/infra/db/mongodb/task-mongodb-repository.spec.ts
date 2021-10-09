@@ -94,7 +94,12 @@ describe('TaskRepository', () => {
             expect(task).toBe(true)
         })
 
-      
+        test('Should return false if was not success', async () => {
+            const sut = makeSut()
+            const task = await sut.delete('id_dont_exist')
+            expect(task).toBe(false)
+        })
+
     })
 
 })

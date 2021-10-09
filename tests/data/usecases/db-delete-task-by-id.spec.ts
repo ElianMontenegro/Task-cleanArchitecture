@@ -32,4 +32,11 @@ describe('DeleteTaskById', () => {
         const isDelete = await sut.delete('id-123456789')
         expect(isDelete).toBe(true)
     })
+
+    test('Should return false if deleteTaskByIdRepository return false', async () => {
+        const { sut, deleteTaskByIdRepositorySpy } = makeSut()
+        deleteTaskByIdRepositorySpy.result = false
+        const isDelete = await sut.delete('id-123456789')
+        expect(isDelete).toBe(false)
+    })
 })

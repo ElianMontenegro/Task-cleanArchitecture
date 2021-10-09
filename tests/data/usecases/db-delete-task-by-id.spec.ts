@@ -27,5 +27,9 @@ describe('DeleteTaskById', () => {
         expect(deleteTaskByIdRepositorySpy.id).toBe('id-123456789')
     })
 
-   
+    test('Should return true if deleteTaskByIdRepository return true', async () => {
+        const { sut } = makeSut()
+        const isDelete = await sut.delete('id-123456789')
+        expect(isDelete).toBe(true)
+    })
 })

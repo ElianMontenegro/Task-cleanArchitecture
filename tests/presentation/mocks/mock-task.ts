@@ -1,4 +1,4 @@
-import { AddTask, LoadAllTask, LoadAllTaskByUser } from '../../../src/domain/usecases'
+import { AddTask, LoadAllTask, LoadAllTaskByUser, DeleteTaskById } from '../../../src/domain/usecases'
 import faker from 'faker'
 
 export class AddTaskSpy implements AddTask {
@@ -33,3 +33,10 @@ export class LoadAllTaskByUserSpy implements LoadAllTaskByUser {
     }
 }
 
+export class DeleteTaskByIdSpy implements DeleteTaskById{
+    id : string
+    async delete(id: string): Promise<void>{
+        this.id = id
+    }
+
+}

@@ -101,7 +101,7 @@ describe('Task Routes', () => {
                 .expect(200)
         })
 
-        test.skip('Should retrun 404 if return array empty of tasks', async () => {
+        test('Should retrun 404 if return array empty of tasks', async () => {
             const accessToken = await mockAccessToken()
             await request(app)
                 .get('/api/load-all-task')

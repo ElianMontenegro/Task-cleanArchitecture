@@ -1,7 +1,7 @@
 import { UpdateTaskController } from '../../../src/presentation/controller'
-import { badRequest } from '../../../src/presentation/helpers'
+import { badRequest, notFound, serverError } from '../../../src/presentation/helpers'
 import { MissingParamError } from '../../../src/presentation/errors'
-import { UpdateTaskByIdSpy } from '../mocks'
+import { throwError, UpdateTaskByIdSpy } from '../mocks'
 
 import faker from 'faker'
 const makeSut = () => {
@@ -32,4 +32,13 @@ describe('UpdateTaskController', () => {
         expect(updateTaskByIdSpy.id).toEqual(httpRequest.params.id)
         expect(updateTaskByIdSpy.accountId).toEqual(httpRequest.accountId)
     })
+
+    test('Should throw error if updateTaskByIdSpy throw error', async () => {
+        const { sut, httpRequest, updateTaskByIdSpy } = makeSut()
+        jest.spyOn(updateTaskByIdSpy, 'update').mockImplementationOnce(throwError)
+        const httpResponse = await sut.handle(httpRequest)
+        expect(httpResponse).toEqual(serverError(new Error()))
+    })
+
+   
 })

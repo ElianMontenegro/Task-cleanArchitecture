@@ -1,4 +1,4 @@
-import { Collection } from 'mongodb'
+import { Collection, ObjectId } from 'mongodb'
 import { mongoHelper } from '.'
 import { 
     CheckTaskByTitleRepository, 
@@ -52,7 +52,7 @@ export class TaskMongoRepository implements CheckTaskByTitleRepository,
     }
 
     async delete(id: string, accountId : string): Promise<Boolean>{
-        const tasks = await this.makeCollection().deleteOne({ _id : id, accountId : accountId })
+        const tasks = await this.makeCollection().deleteOne({"_id": new ObjectId(id), accountId : accountId})
         if(tasks.deletedCount === 1){
             return true
         }

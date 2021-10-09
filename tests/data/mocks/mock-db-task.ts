@@ -1,5 +1,5 @@
 import { CheckTaskByTitleRepository, AddTaskRepository, LoadAllTaskRepository, LoadAllTaskByUserRepository, DeleteTaskByIdRepository } from '../../../src/data/protocols'
-import { AddTask } from '../../../src/domain/usecases'
+import { AddTask, UpdateTaskById } from '../../../src/domain/usecases'
 import { mockLoadAllTaskResult } from '../../domain/mocks'
 import faker from 'faker'
 
@@ -55,6 +55,18 @@ export class DeleteTaskByIdRepositorySpy implements DeleteTaskByIdRepository{
         this.id = id
         return this.result
     }
-
 }
 
+
+
+export class UpdateTaskRepository implements UpdateTaskById{
+    id : string
+    accountId : string
+    isUpdate = true
+    async update(id: string, accountId: string): Promise<Boolean>{
+        this.accountId = accountId
+        this.id = id
+        return this.isUpdate
+    }
+}
+   

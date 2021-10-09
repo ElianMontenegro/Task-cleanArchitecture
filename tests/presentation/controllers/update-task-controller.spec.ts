@@ -40,5 +40,10 @@ describe('UpdateTaskController', () => {
         expect(httpResponse).toEqual(serverError(new Error()))
     })
 
-   
+    test('Should return error if updateTaskByIdSpy return false', async () => {
+        const { sut, httpRequest, updateTaskByIdSpy } = makeSut()
+        updateTaskByIdSpy.isUpdate = false
+        const httpResponse = await sut.handle(httpRequest)
+        expect(httpResponse).toEqual(notFound(new Error('tasks not found')))
+    })
 })

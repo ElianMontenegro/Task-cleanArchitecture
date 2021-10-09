@@ -1,14 +1,7 @@
-import { DeleteTaskById } from "../../../src/domain/usecases";
-import { DeleteTaskByIdRepository } from '../../../src/data/protocols/db'
+import { DbDeleteTaskById } from '../../../src/data/usecases'
 import { DeleteTaskByIdRepositorySpy } from '../mocks'
 
-export class DbDeleteTaskById implements DeleteTaskById{
-    constructor(private readonly deleteTaskByIdRepository : DeleteTaskByIdRepository){}
-    async delete(id: string): Promise<Boolean>{ 
-        return await this.deleteTaskByIdRepository.delete(id)
-    }
-    
-}
+
 
 const makeSut = () => {
     const deleteTaskByIdRepositorySpy = new DeleteTaskByIdRepositorySpy()

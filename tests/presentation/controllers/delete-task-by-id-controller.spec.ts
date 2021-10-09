@@ -25,5 +25,9 @@ describe(' DeleteTaskById ', () => {
         expect(httpResponse).toEqual(badRequest(new MissingParamError('id')))
     })
 
-   
+    test('Should call deleteTaskByIdSpy with coorect param', async () => {
+        const { sut, httpRequest, deleteTaskByIdSpy } = makeSut()
+        await sut.handle(httpRequest)
+        expect(deleteTaskByIdSpy.id).toEqual(httpRequest.params.id)
+    })
 })

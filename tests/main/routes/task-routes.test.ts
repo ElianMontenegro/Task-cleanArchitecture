@@ -72,14 +72,14 @@ describe('Task Routes', () => {
             const addTaskParams = mockAddTaskParams()
             await taskCollection.insertOne(addTaskParams)
             await request(app)
-                .get('/api/load-all-task')
+                .get('/api/all-task')
                 .expect("Content-Type", /json/)
                 .expect(200)
         })
 
         test('Should retrun 404 if return array empty of tasks', async () => {
             await request(app)
-                .get('/api/load-all-task')
+                .get('/api/all-task')
                 .expect("Content-Type", /json/)
                 .expect(404)
         })
@@ -95,7 +95,7 @@ describe('Task Routes', () => {
             
             await taskCollection.insertOne(addTaskParams)
             await request(app)
-                .get('/api/load-all-task-by-user')
+                .get('/api/tasks')
                 .set('Authorization', `Bearer ${accessToken}`)
                 .expect("Content-Type", /json/)
                 .expect(200)
@@ -104,7 +104,7 @@ describe('Task Routes', () => {
         test('Should retrun 404 if return array empty of tasks', async () => {
             const accessToken = await mockAccessToken()
             await request(app)
-                .get('/api/load-all-task')
+                .get('/api/tasks')
                 .set('Authorization', `Bearer ${accessToken}`)
                 .expect("Content-Type", /json/)
                 .expect(404)

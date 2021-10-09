@@ -85,4 +85,16 @@ describe('TaskRepository', () => {
 
     })
 
+    describe('deleteTaskById', () => {
+        test('Should return true if was success', async () => {
+            const sut = makeSut()
+            const addTaskParams = mockAddTaskParams()
+            const newTask : any = await taskCollection.insertOne(addTaskParams)
+            const task = await sut.delete(newTask.insertedId)
+            expect(task).toBe(true)
+        })
+
+      
+    })
+
 })

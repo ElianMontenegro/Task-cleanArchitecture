@@ -25,4 +25,11 @@ describe('DbUpdateTaskById use case', () => {
         expect(updateTaskRepository.accountId).toBe(updateTaskParams.accountId)
     })
 
+    test('Should return true if updateTaskRepository return true', async () => {
+        const { sut, updateTaskRepository, updateTaskParams } = makeSut()
+        updateTaskRepository.isUpdate = false
+        const isUpdate = await sut.update(updateTaskParams.id, updateTaskParams.accountId)
+        expect(isUpdate).toBe(false)
+    })
+
 })

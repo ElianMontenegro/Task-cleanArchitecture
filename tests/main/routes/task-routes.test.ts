@@ -175,6 +175,17 @@ describe('Task Routes', () => {
                 .expect("Content-Type", /json/)
                 .expect(404)
         })
+
+        test('Should return 500 if server error', async () => {
+            const accessToken = await mockAccessToken()
+            const idFake = 'idinvalid'
+            await request(app)
+                .put('/api/update-task/' + idFake)
+                .set('Authorization', `Bearer ${accessToken}`)
+                .send({ title : 'new title', content: 'new content' })
+                .expect("Content-Type", /json/)
+                .expect(500)
+        })
     })
 })
 

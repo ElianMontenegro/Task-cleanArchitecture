@@ -113,7 +113,13 @@ describe('TaskRepository', () => {
             expect(task).toBe(true)
         })
 
-       
+        test('Should return false if was not success', async () => {
+            const sut = makeSut()
+            const addTaskParams = mockAddTaskParams()
+            const modifideTaskParams = {title : 'new title', content : 'new content'}
+            const task = await sut.update('6161dfa17faa6a3c6ee50b7f', addTaskParams.accountId, modifideTaskParams)
+            expect(task).toBe(false)
+        })
 
     })
 

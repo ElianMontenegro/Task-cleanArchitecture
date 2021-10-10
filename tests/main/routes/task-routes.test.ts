@@ -148,6 +148,7 @@ describe('Task Routes', () => {
     })
 
     describe('UpdateTask route', () => {
+
         test('Should return 200 if task was updated', async () => {
             const accessToken = await mockAccessToken()
             const decode = await mockDecodifyAccessToken(accessToken)

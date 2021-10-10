@@ -110,5 +110,22 @@ describe('Task Routes', () => {
                 .expect(404)
         })
     })
+
+    describe('deleteTaskById', () => {
+        test('Should return 200 if task was deleted', async () => {
+            const accessToken = await mockAccessToken()
+            const decode = await mockDecodifyAccessToken(accessToken)
+
+            const addTaskParams = mockAddTaskParams()
+            addTaskParams.accountId = decode.id
+            
+            const task = await taskCollection.insertOne(addTaskParams)
+            await request(app)
+                .delete('/api/delete-task/' + task.insertedId)
+                .set('Authorization', `Bearer ${accessToken}`)
+                .expect("Content-Type", /json/)
+                .expect(200)
+        })
+    })
 })
 

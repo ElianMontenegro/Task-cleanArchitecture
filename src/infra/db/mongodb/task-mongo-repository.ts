@@ -61,7 +61,7 @@ export class TaskMongoRepository implements CheckTaskByTitleRepository,
 
     async update(id: string, accountId : string, data : UpdateTaskById.Params): Promise<Boolean>{
         const tasks = await this.makeCollection().findOneAndUpdate({ 
-            _id : id, 
+            _id : new ObjectId(id), 
             accountId : accountId 
         }, 
         { 

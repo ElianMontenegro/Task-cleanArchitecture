@@ -103,4 +103,20 @@ describe('TaskRepository', () => {
 
     })
 
+    describe('UpdateTask', () => {
+        test('Should return true if was success', async () => {
+            const sut = makeSut()
+            const addTaskParams = mockAddTaskParams()
+            const newTask : any = await taskCollection.insertOne(addTaskParams)
+            const modifideTaskParams = {title : 'new title', content : 'new content'}
+            const task = await sut.update(newTask.insertedId, addTaskParams.accountId , modifideTaskParams)
+            expect(task).toBe(true)
+        })
+
+       
+
+    })
+
+    
+
 })

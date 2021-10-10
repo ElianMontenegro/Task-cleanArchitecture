@@ -126,6 +126,16 @@ describe('Task Routes', () => {
                 .expect("Content-Type", /json/)
                 .expect(200)
         })
+
+        test('Should return 404 if task not founded', async () => {
+            const accessToken = await mockAccessToken()
+            const idFake = '11492562d02cbd84935ede2a'
+            await request(app)
+                .delete('/api/delete-task/' + idFake)
+                .set('Authorization', `Bearer ${accessToken}`)
+                .expect("Content-Type", /json/)
+                .expect(404)
+        })
     })
 })
 

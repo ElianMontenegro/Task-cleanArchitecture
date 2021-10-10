@@ -136,6 +136,15 @@ describe('Task Routes', () => {
                 .expect("Content-Type", /json/)
                 .expect(404)
         })
+
+        test('Should return 500 if id is bad', async () => {
+            const accessToken = await mockAccessToken()
+            await request(app)
+                .delete('/api/delete-task/' + 'idnotvalid')
+                .set('Authorization', `Bearer ${accessToken}`)
+                .expect("Content-Type", /json/)
+                .expect(500)
+        })
     })
 })
 

@@ -1,4 +1,4 @@
-import { loginPath, signupPath, addTaskPath, LoadAllTaskPath, LoadAllTaskByUserPath, DeleteTaskByIdPath } from './paths/index'
+import { loginPath, signupPath, addTaskPath, LoadAllTaskPath, LoadAllTaskByUserPath, DeleteTaskByIdPath, UpdateTaskPath } from './paths/index'
 
 export default {
     '/api/login' : loginPath,
@@ -6,5 +6,6 @@ export default {
     '/api/add-task' : addTaskPath,
     '/api/all-task' : LoadAllTaskPath,
     '/api/tasks' : LoadAllTaskByUserPath,
-    '/api/task/{id}' : DeleteTaskByIdPath
+    '/api/delete-task/{id}' : DeleteTaskByIdPath,
+    '/api/update-task/{id}' : UpdateTaskPath
 }

@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "test:coverage": "npm test --  --coverage",
-    "dev": "nodemon ",
-    "test:coveralls": "npm run test:coverage && coveralls < coverage/lcov.info"
+    "test:ci": "npm test -- --coverage",
+    "test:coveralls": "npm run test:ci && coveralls < coverage/lcov.info",
+    "dev": "nodemon "
   },
   "keywords": [],
   "author": "",

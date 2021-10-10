@@ -2,5 +2,5 @@ language: node_js
 node_js:
   - 12
 script:
-  - eslint 'src/**'
-  - npm run test:coverage
+  - standard
+  - npm run test:coveralls

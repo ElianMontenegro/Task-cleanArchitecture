@@ -1,6 +1,5 @@
 language: node_js
 node_js:
   - 12
-script:
-  - standard
-  - npm run test:coveralls
+script: npm test
+after_success: npm run test:coveralls

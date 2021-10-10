@@ -48,8 +48,12 @@ export class DeleteTaskByIdSpy implements DeleteTaskById{
 export class UpdateTaskByIdSpy implements UpdateTaskById{
     id : string
     accountId : string
+    title : string
+    content : string
     isUpdate = true
-    async update(id: string, accountId : string): Promise<Boolean>{
+    async update(id: string, accountId : string, data : UpdateTaskById.Params): Promise<Boolean>{
+        this.title = data.title
+        this.content = data.content
         this.accountId = accountId
         this.id = id
         return this.isUpdate

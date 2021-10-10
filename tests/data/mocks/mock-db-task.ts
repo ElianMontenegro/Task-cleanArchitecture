@@ -62,8 +62,10 @@ export class DeleteTaskByIdRepositorySpy implements DeleteTaskByIdRepository{
 export class UpdateTaskRepository implements UpdateTaskById{
     id : string
     accountId : string
+    data : any
     isUpdate = true
-    async update(id: string, accountId: string): Promise<Boolean>{
+    async update(id: string, accountId: string, data : UpdateTaskById.Params): Promise<Boolean>{
+        this.data = data
         this.accountId = accountId
         this.id = id
         return this.isUpdate

@@ -10,10 +10,12 @@ export class UpdateTaskController implements IController {
         try {
             const { id } = httpRequest.params
             const { accountId } = httpRequest
+            const { title, content } = httpRequest.body
             if (!id) {
                 return badRequest(new MissingParamError('id'))
             }
-            const task = await this.updateTaskById.update(id, accountId)
+            const data = { title, content }
+            const task = await this.updateTaskById.update(id, accountId, data)
             if(!task){
                 return notFound(new Error('tasks not found'))
             }

@@ -5,19 +5,19 @@ import {
     AddTaskRepository, 
     LoadAllTaskRepository, 
     LoadAllTaskByUserRepository, 
-    DeleteTaskByIdRepository 
+    DeleteTaskByIdRepository,
+    UpdateTaskRepository
 } 
 from '../../../../src/data/protocols/db/task'
 
-import { AddTask } from '../../../domain/usecases'
+import { AddTask, UpdateTaskById } from '../../../domain/usecases'
 
 export class TaskMongoRepository implements CheckTaskByTitleRepository, 
                                             AddTaskRepository, 
                                             LoadAllTaskRepository, 
                                             LoadAllTaskByUserRepository,
-                                            DeleteTaskByIdRepository
-                                            {
-   
+                                            DeleteTaskByIdRepository, 
+                                            UpdateTaskRepository{
     taskCollection : Collection
     makeCollection = () => {
         this.taskCollection = mongoHelper.getCollection('tasks')
@@ -59,4 +59,13 @@ export class TaskMongoRepository implements CheckTaskByTitleRepository,
         return false
     }
 
+    async update(id: string, accountId : string, data : UpdateTaskById.Params): Promise<Boolean>{
+        const tasks = await this.makeCollection().findOneAndUpdate({ _id : id, accountId : accountId }, data)
+        console.log(tasks);
+        
+        if(tasks.ok === 1){
+            return true
+        }
+        return false
+    }
 }

@@ -146,5 +146,34 @@ describe('Task Routes', () => {
                 .expect(500)
         })
     })
+
+    describe('UpdateTask route', () => {
+        test('Should return 200 if task was updated', async () => {
+            const accessToken = await mockAccessToken()
+            const decode = await mockDecodifyAccessToken(accessToken)
+
+            const addTaskParams = mockAddTaskParams()
+            addTaskParams.accountId = decode.id
+            const task = await taskCollection.insertOne(addTaskParams)
+
+            await request(app)
+                .put('/api/update-task/' + task.insertedId)
+                .set('Authorization', `Bearer ${accessToken}`)
+                .send({ title : 'new title', content: 'new content' })
+                .expect("Content-Type", /json/)
+                .expect(200)
+        })
+
+        test('Should return 404 if task not founded', async () => {
+            const accessToken = await mockAccessToken()
+            const idFake = '91492562d02cbd84935ede2a'
+            await request(app)
+                .put('/api/update-task/' + idFake)
+                .set('Authorization', `Bearer ${accessToken}`)
+                .send({ title : 'new title', content: 'new content' })
+                .expect("Content-Type", /json/)
+                .expect(404)
+        })
+    })
 })
 

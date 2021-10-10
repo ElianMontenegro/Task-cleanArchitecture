@@ -1,3 +1,7 @@
 export * from './login-path'
 export * from './signup-path'
 export * from './add-task-path'
+export * from './load-all-task-path'
+export * from './load-all-task-by-user-path'
+export * from './delete-task-by-id-path'
+export * from './update-task-path'

@@ -6,14 +6,20 @@ export const badRequest = (error : Error): IHttpResponse => ({
   body: error.message
 })
 
+export const unauthorized = (): IHttpResponse => ({
+  statusCode: 401,
+  body: new UnauthorizedError()
+})
+
 export const forbidden = (error: Error): IHttpResponse => ({
   statusCode: 403,
   body: error
 })
 
-export const unauthorized = (): IHttpResponse => ({
-  statusCode: 401,
-  body: new UnauthorizedError()
+
+export const notFound = (error: Error): IHttpResponse => ({
+  statusCode: 404,
+  body: error.message
 })
 
 export const serverError = (error: Error): IHttpResponse => ({

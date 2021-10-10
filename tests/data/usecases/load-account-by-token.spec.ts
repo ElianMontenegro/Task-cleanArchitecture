@@ -1,6 +1,5 @@
 import { LoadAccountByToken } from '../../../src/data/usecases'
 import { DescrypterSpy } from '../mocks'
-import { throwError } from '../../presentation/mocks'
 import faker from 'faker'
 
 type SutType = {

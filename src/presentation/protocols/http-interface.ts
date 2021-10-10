@@ -1,7 +1,8 @@
 
 export interface IHttpRequest {
     body?: any,
-    accountId?: any
+    accountId?: any,
+    params?: any
 }
 
 

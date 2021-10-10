@@ -1,2 +1,6 @@
 export * from './check-task-by-title-repository'
 export * from './add-task-repository'
+export * from './load-all-task-repository'
+export * from './load-all-task-by-user-repository'
+export * from './delete-task-by-id-repository'
+export * from './update-task-repository'

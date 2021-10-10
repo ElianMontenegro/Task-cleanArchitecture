@@ -1,4 +1,4 @@
-import { badRequest, unauthorized, serverError, forbidden, bearerAuth } from './components/index'
+import { badRequest, unauthorized, serverError, forbidden, bearerAuth, notFound } from './components/index'
 
 export default {
     securitySchemes: {
@@ -8,5 +8,6 @@ export default {
     unauthorized,
     serverError,
     forbidden,
-    bearerAuth
+    bearerAuth,
+    notFound
 }

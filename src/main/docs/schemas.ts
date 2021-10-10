@@ -1,4 +1,12 @@
-import { loginParamsSchema, accountSchema, errorSchema, signupParamsSchema, taskSchema, addTaskParamsSchema }from './schemas/index'
+import { 
+    loginParamsSchema, 
+    accountSchema, 
+    errorSchema, 
+    signupParamsSchema, 
+    taskSchema, 
+    addTaskParamsSchema,
+    loadAllTaskSchema
+}from './schemas/index'
 
 export default {
     loginParams : loginParamsSchema,
@@ -6,5 +14,6 @@ export default {
     error : errorSchema,
     signupParams : signupParamsSchema,
     task : taskSchema,
-    addTaskParams : addTaskParamsSchema
+    addTaskParams : addTaskParamsSchema,
+    loadAllTask : loadAllTaskSchema
 }

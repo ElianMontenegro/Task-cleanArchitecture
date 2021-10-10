@@ -1,6 +1,8 @@
-import { CheckTaskByTitleRepository, AddTaskRepository } from '../../../src/data/protocols'
-import { AddTask } from '../../../src/domain/usecases'
+import { CheckTaskByTitleRepository, AddTaskRepository, LoadAllTaskRepository, LoadAllTaskByUserRepository, DeleteTaskByIdRepository } from '../../../src/data/protocols'
+import { AddTask, UpdateTaskById } from '../../../src/domain/usecases'
+import { mockLoadAllTaskResult } from '../../domain/mocks'
 import faker from 'faker'
+
 
 export class CheckTaskByTitleRepositorySpy implements CheckTaskByTitleRepository {
     title : string
@@ -27,3 +29,46 @@ export class AddTaskRepositorySpy implements AddTaskRepository{
     }
     
 }
+
+export class LoadAllTaskRepositorySpy implements LoadAllTaskRepository{
+    result = mockLoadAllTaskResult()
+    async loadAllTaks(): Promise<any>{
+        return this.result
+    }
+}
+
+export class LoadAllTaskByUserRepositorySpy implements LoadAllTaskByUserRepository{
+    id : string
+    result = mockLoadAllTaskResult()
+    async loadAllTaksByUser(id : string): Promise<any>{
+        this.id = id
+        return this.result
+    }
+}
+
+export class DeleteTaskByIdRepositorySpy implements DeleteTaskByIdRepository{
+    id : string
+    accountId : string
+    result = true
+    async delete(id: string, accountId : string): Promise<boolean>{
+        this.accountId = accountId
+        this.id = id
+        return this.result
+    }
+}
+
+
+
+export class UpdateTaskRepository implements UpdateTaskById{
+    id : string
+    accountId : string
+    data : any
+    isUpdate = true
+    async update(id: string, accountId: string, data : UpdateTaskById.Params): Promise<Boolean>{
+        this.data = data
+        this.accountId = accountId
+        this.id = id
+        return this.isUpdate
+    }
+}
+   

@@ -1,3 +1,7 @@
 export * from './makeLoginController'
 export * from './makeSignupController'
 export * from './add-task-controller-factory'
+export * from './load-all-task-controller-factory'
+export * from './load-all-task-by-user-controller-factory'
+export * from './delete-task-by-id-controller-factory'
+export * from './update-task-controller-factory'

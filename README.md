@@ -1,5 +1,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/ElianMontenegro/Task-cleanArchitecture/badge.svg?branch=main)](https://coveralls.io/github/ElianMontenegro/Task-cleanArchitecture?branch=main)
 
+[![Build Status](https://app.travis-ci.com/ElianMontenegro/Task-cleanArchitecture.svg?branch=main)](https://app.travis-ci.com/ElianMontenegro/Task-cleanArchitecture)
+
 # Task-cleanArchitecture V1
 You will can create task, edit and delete it. api made with NODE JS use Typescript with a **Clean architecture**, **SOLID principles** and **Design Patterns**
 
